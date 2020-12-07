@@ -1,0 +1,8 @@
+{
+    "appId": "com.catalogs",
+    "productName": "My catalogs",
+    "directories": {
+        "output": "out",
+        "buildResources": "dist/renderer"
+    }
+}
