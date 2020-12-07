@@ -12,18 +12,21 @@ interface ControllerProps {
 
 export const CatalogController = ({ children }: ControllerProps) => {
     const [state, setState] = React.useState<AppData>();
-    React.useEffect(() => {
-        const fetchData = async () => {
-            const result = await ipcRenderer.invoke("GET_APPDATA");
-            setState(result);
-        };
 
-        fetchData();
+    React.useEffect(() => {
+        const initialize = async () => {
+            const data: AppData = await ipcRenderer.invoke("GET_DATA");
+            setState(data);
+        };
+        initialize();
     }, []);
 
     const setValues = React.useCallback(
-        (values: AppData) => setState(values),
-        []
+        (values: AppData) => {
+            setState(values);
+            ipcRenderer.invoke("UPDATE_DATA", JSON.stringify(values));
+        },
+        [setState]
     );
 
     return (

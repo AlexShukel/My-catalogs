@@ -3,8 +3,10 @@ import isDev from "electron-is-dev";
 import path from "path";
 import fs from "fs";
 import util from "util";
+import { AppData } from "./objects/AppData";
 
 const readFile = util.promisify(fs.readFile);
+const writeFile = util.promisify(fs.writeFile);
 
 let win: BrowserWindow | null = null;
 function createWindow() {
@@ -29,6 +31,7 @@ function createWindow() {
 }
 
 const storagePath = path.resolve(__dirname, "PHOTO_STORAGE");
+const JSON_FILE = "data.json";
 
 app.on("ready", () => {
     if (!fs.existsSync(storagePath)) {
@@ -69,6 +72,38 @@ ipcMain.handle("TEST", async (event) => {
     return base64;
 });
 
+const dataPath = path.join(storagePath, JSON_FILE);
+
+ipcMain.handle("GET_DATA", (e) => {
+    if (fs.existsSync(dataPath)) {
+        return JSON.parse(fs.readFileSync(dataPath).toString());
+    } else {
+        const emptyData: AppData = {
+            catalogs: [],
+        };
+        fs.writeFileSync(dataPath, JSON.stringify(emptyData));
+        return emptyData;
+    }
+});
+
+ipcMain.handle("UPDATE_DATA", (e, data: string) => {
+    fs.writeFileSync(dataPath, data);
+});
+
+ipcMain.handle(
+    "UPLOAD_CATALOG_COVER",
+    async (event, catalogName: string, buffer: Buffer, fileName: string) => {
+        const filePath = path.join(
+            storagePath,
+            "catalogs",
+            catalogName,
+            fileName
+        );
+        await writeFile(filePath, Buffer.from(buffer));
+        return filePath;
+    }
+);
+
 ipcMain.handle("NEW_CATALOG", (event, name: string) => {
     const targetPath = path.join(storagePath, "catalogs", name);
 
@@ -77,6 +112,5 @@ ipcMain.handle("NEW_CATALOG", (event, name: string) => {
     }
 
     fs.mkdirSync(targetPath);
-
     return true;
 });

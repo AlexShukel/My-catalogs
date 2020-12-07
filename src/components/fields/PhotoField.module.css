@@ -1,0 +1,14 @@
+.photo-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ededed;
+    border: 2px solid #ededed;
+    border-radius: 10px;
+    position: relative;
+}
+
+.photo-field__placeholder-wrapper {
+    width: 100%;
+    height: 100%;
+}

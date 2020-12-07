@@ -6,6 +6,7 @@ import { I18nContext } from "./components/i18n/I18nContext";
 import Catalogs from "./components/Catalogs";
 
 import "./styles.css";
+import { CatalogController } from "./components/catalog-context/CatalogContext";
 
 const theme = createMuiTheme({
     overrides: {
@@ -32,15 +33,17 @@ const theme = createMuiTheme({
 const App = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Router initialPage="catalogs">
-                {/* TODO create I18n */}
-                <I18nContext.Provider value={{}}>
-                    <Route location="catalogs">{() => <Catalogs />}</Route>
-                    {/* <Route location="folder">
+            {/* TODO create I18n */}
+            <I18nContext.Provider value={{}}>
+                <CatalogController>
+                    <Router initialPage="catalogs">
+                        <Route location="catalogs">{() => <Catalogs />}</Route>
+                        {/* <Route location="folder">
                         {(params) => <Folder path={params.path} />}
                     </Route> */}
-                </I18nContext.Provider>
-            </Router>
+                    </Router>
+                </CatalogController>
+            </I18nContext.Provider>
         </ThemeProvider>
     );
 };

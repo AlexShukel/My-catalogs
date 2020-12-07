@@ -20,7 +20,8 @@
         "electron-is-dev": "^1.2.0",
         "lodash": "^4.17.20",
         "react": "^17.0.1",
-        "react-dom": "^17.0.1"
+        "react-dom": "^17.0.1",
+        "react-draggable": "^4.4.3"
     },
     "devDependencies": {
         "@types/classnames": "^2.2.11",

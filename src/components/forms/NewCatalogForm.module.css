@@ -1,0 +1,10 @@
+.draggable {
+    cursor: move;
+}
+
+.add-btn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin: 30px;
+}
