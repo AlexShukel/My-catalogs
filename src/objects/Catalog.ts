@@ -1,11 +1,10 @@
-import { FileInfo } from "./FileInfo";
 import { IFolder } from "./IFolder";
 import { Photo } from "./Photo";
 
 export interface Catalog {
     id: number;
     name: string;
-    cover: FileInfo;
+    cover: string;
     folders: IFolder[];
     photos: Photo[];
 }

@@ -2,7 +2,9 @@ import { BrowserWindow, app, ipcMain } from "electron";
 import isDev from "electron-is-dev";
 import path from "path";
 import fs from "fs";
-import { FileInfo } from "./objects/FileInfo";
+import util from "util";
+
+const readFile = util.promisify(fs.readFile);
 
 let win: BrowserWindow | null = null;
 function createWindow() {
@@ -26,7 +28,19 @@ function createWindow() {
     });
 }
 
-app.on("ready", createWindow);
+const storagePath = path.resolve(__dirname, "PHOTO_STORAGE");
+
+app.on("ready", () => {
+    if (!fs.existsSync(storagePath)) {
+        fs.mkdirSync(storagePath, {
+            recursive: true,
+        });
+        fs.mkdirSync(path.join(storagePath, "catalogs"), {
+            recursive: true,
+        });
+    }
+    createWindow();
+});
 
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
@@ -40,45 +54,29 @@ app.on("activate", () => {
     }
 });
 
-const storagePath = path.resolve(__dirname, "PHOTO_STORAGE");
-
-if (!fs.existsSync(storagePath)) {
-    fs.mkdirSync(storagePath, {
-        recursive: true,
-    });
-}
-
-ipcMain.handle(
-    "UPLOAD_PHOTO",
-    (event: unknown, photoPath: string, name: string, appPath: string) => {
-        const destPath = path.join(storagePath, appPath);
-        fs.copyFile(photoPath, destPath, (err) => {
-            if (err) throw err;
-            console.log("Uploaded!");
-        });
-    }
-);
-
-ipcMain.handle(
-    "CREATE_CATALOG",
-    (
-        event: unknown,
-        name: string,
-        { path: coverPath, name: coverName }: FileInfo
-    ) => {
-        const catalogPath = path.join(storagePath, name);
-        let newCoverPath = "";
-        fs.mkdir(catalogPath, (err) => {
-            if (err) throw err;
-            console.log("Created catalog!");
-        });
-        if (coverPath) {
-            newCoverPath = path.join(catalogPath, coverName);
-            fs.copyFile(coverPath, newCoverPath, (err) => {
-                if (err) throw err;
-                console.log("Created catalog cover!");
-            });
+ipcMain.handle("TEST", async (event) => {
+    let base64: string = "";
+    const buffer = await readFile(
+        path.resolve(
+            storagePath,
+            "do-you-think-you-re-happy-jgdbfiey-9bb0198eeccd0a3c3c13aed064e2e2b3.jpg"
+        ),
+        {
+            encoding: "base64",
         }
-        return newCoverPath;
+    );
+    if (buffer) base64 = buffer;
+    return base64;
+});
+
+ipcMain.handle("NEW_CATALOG", (event, name: string) => {
+    const targetPath = path.join(storagePath, "catalogs", name);
+
+    if (fs.existsSync(targetPath)) {
+        return false;
     }
-);
+
+    fs.mkdirSync(targetPath);
+
+    return true;
+});

@@ -1,7 +1,5 @@
-import { FileInfo } from "./FileInfo";
-
 export interface Photo {
     id: number;
-    photo: FileInfo;
+    photo: string;
     description: string;
 }
