@@ -1,0 +1,14 @@
+.head {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    height: 72px;
+    width: 100%;
+}
+
+.head__title {
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

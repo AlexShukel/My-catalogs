@@ -5,6 +5,8 @@ import { Route, Router } from "./components/router/Router";
 import { I18nContext } from "./components/i18n/I18nContext";
 import Catalogs from "./components/Catalogs";
 
+import "./styles.css";
+
 const theme = createMuiTheme({
     overrides: {
         MuiListItem: {

@@ -1,0 +1,4 @@
+$main: #673ab7;
+$option: #512da8;
+$secondary: #2196f3;
+$secondary-dark: #0069c0;

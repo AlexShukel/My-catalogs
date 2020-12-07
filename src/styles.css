@@ -1,0 +1,20 @@
+body {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.center-aligner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.button-margin {
+    margin: 10px;
+}

@@ -44,31 +44,6 @@ const reactConfig = (env, args) => {
                     use: "awesome-typescript-loader",
                 },
                 {
-                    test: /\.s[ac]ss$/i,
-                    exclude: /node_modules/,
-                    oneOf: [
-                        {
-                            test: /\.g\.s[ac]ss$/,
-                            use: ["style-loader", "css-loader", "sass-loader"],
-                        },
-                        {
-                            use: [
-                                isProduction
-                                    ? MiniCssExtractPlugin.loader
-                                    : "style-loader",
-                                {
-                                    loader: "css-loader",
-                                    options: {
-                                        modules: true,
-                                        sourceMap: !isProduction,
-                                    },
-                                },
-                                "sass-loader",
-                            ],
-                        },
-                    ],
-                },
-                {
                     test: /\.css$/,
                     use: ["style-loader", "css-loader"],
                 },
