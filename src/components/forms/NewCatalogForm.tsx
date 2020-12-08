@@ -65,17 +65,25 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
         []
     );
 
-    const handleChange = useCallback(
-        (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
-            setName(e.target.value),
-        []
-    );
-
     const submitForm = useCallback(() => {
         onSubmit(name, selectedFile.current);
         setName("");
         closeForm();
     }, [name, closeForm, onSubmit]);
+
+    const handleChange = useCallback(
+        (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
+            setName(e.target.value),
+
+        []
+    );
+
+    const handleKeyPress = useCallback(
+        (e: React.KeyboardEvent) => {
+            if (e.key === "Enter") submitForm();
+        },
+        [submitForm]
+    );
 
     return (
         <React.Fragment>
@@ -108,6 +116,7 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
                             label={i18n.name}
                             value={name}
                             onChange={handleChange}
+                            onKeyPress={handleKeyPress}
                             inputRef={inputRef}
                         />
                         {/* <PhotoField handleChange={uploadPhoto} /> */}
