@@ -40,8 +40,13 @@ interface Props {
 }
 
 const NewCatalogForm = ({ onSubmit }: Props) => {
+    const inputRef = React.useRef<HTMLInputElement>();
+
     const [formOpened, setFormOpened] = useState(false);
-    const openForm = useCallback(() => setFormOpened(true), []);
+    const openForm = useCallback(() => {
+        setFormOpened(true);
+        setTimeout(() => inputRef.current?.focus());
+    }, []);
     const closeForm = useCallback(() => {
         setFormOpened(false);
         setName("");
@@ -103,6 +108,7 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
                             label={i18n.name}
                             value={name}
                             onChange={handleChange}
+                            inputRef={inputRef}
                         />
                         {/* <PhotoField handleChange={uploadPhoto} /> */}
                     </DialogContent>
