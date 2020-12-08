@@ -18,7 +18,7 @@ export const useCatalogArrayContext = <T,>(
     // FIXME values discards
     const setContext = React.useCallback(
         () => context.setValues(set(context, arrayPath, array)),
-        [context]
+        [context, array, arrayPath]
     );
 
     const add = React.useCallback(

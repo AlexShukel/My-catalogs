@@ -1,6 +1,5 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { ipcRenderer } from "electron";
-import { Box, Button, Icon } from "@material-ui/core";
 
 import Head from "./Head";
 import { useI18n } from "./i18n/I18nContext";
@@ -17,7 +16,7 @@ const defaultI18n = {
 
 const Catalogs = () => {
     const i18n = useI18n(defaultI18n, "Catalogs");
-    const { array, add, remove } = useCatalogArrayContext<Catalog>("catalogs");
+    const { array, add } = useCatalogArrayContext<Catalog>("catalogs");
 
     const createNewCatalog = useCallback(
         async (name: string, file: File | null) => {
@@ -45,28 +44,17 @@ const Catalogs = () => {
                 console.log("FOLDER ALREADY EXISTS");
             }
         },
-        []
+        [array, add]
     );
 
     return (
         <div>
-            <Head title={i18n.catalogs} className={css["head"]} />
+            <Head title={i18n.catalogs} className={css.head} />
 
             {array &&
                 array.map((catalog) => (
                     <div key={catalog.id}>{catalog.name}</div>
                 ))}
-
-            <button
-                onClick={() =>
-                    ipcRenderer.invoke(
-                        "UPLOAD_CATALOG_COVER",
-                        new Uint8Array(Buffer.from("Hello Node.js"))
-                    )
-                }
-            >
-                test
-            </button>
 
             {/* POPUPS */}
             <NewCatalogForm onSubmit={createNewCatalog} />

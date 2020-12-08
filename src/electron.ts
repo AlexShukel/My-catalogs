@@ -76,13 +76,14 @@ const dataPath = path.join(storagePath, JSON_FILE);
 
 ipcMain.handle("GET_DATA", (e) => {
     if (fs.existsSync(dataPath)) {
-        return JSON.parse(fs.readFileSync(dataPath).toString());
+        return fs.readFileSync(dataPath).toString();
     } else {
         const emptyData: AppData = {
             catalogs: [],
         };
-        fs.writeFileSync(dataPath, JSON.stringify(emptyData));
-        return emptyData;
+        const stringifiedEmptyData = JSON.stringify(emptyData).toString();
+        fs.writeFileSync(dataPath, stringifiedEmptyData);
+        return stringifiedEmptyData;
     }
 });
 

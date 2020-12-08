@@ -1,11 +1,11 @@
-import React, { useMemo, useRef } from "react";
+import React, { useRef } from "react";
 
 interface Props {
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     photoPath: string;
 }
 
-const PhotoField = ({ handleChange, photoPath }: Props) => {
+const PhotoField = ({ handleChange }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     return (

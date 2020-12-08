@@ -14,11 +14,12 @@ export const CatalogController = ({ children }: ControllerProps) => {
     const [state, setState] = React.useState<AppData>();
 
     React.useEffect(() => {
-        const initialize = async () => {
-            const data: AppData = await ipcRenderer.invoke("GET_DATA");
-            setState(data);
-        };
-        initialize();
+        ipcRenderer
+            .invoke("GET_DATA")
+            .then((data: string) => {
+                setState(JSON.parse(data));
+            })
+            .catch((err) => console.error(err));
     }, []);
 
     const setValues = React.useCallback(

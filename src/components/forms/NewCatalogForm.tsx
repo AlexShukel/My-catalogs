@@ -42,7 +42,10 @@ interface Props {
 const NewCatalogForm = ({ onSubmit }: Props) => {
     const [formOpened, setFormOpened] = useState(false);
     const openForm = useCallback(() => setFormOpened(true), []);
-    const closeForm = useCallback(() => setFormOpened(false), []);
+    const closeForm = useCallback(() => {
+        setFormOpened(false);
+        setName("");
+    }, []);
 
     const i18n = useI18n(defaultI18n, "FolderForm");
     const [name, setName] = useState("");
@@ -67,7 +70,7 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
         onSubmit(name, selectedFile.current);
         setName("");
         closeForm();
-    }, [name, selectedFile.current]);
+    }, [name, closeForm, onSubmit]);
 
     return (
         <React.Fragment>
