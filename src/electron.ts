@@ -7,6 +7,7 @@ import { AppData } from "./objects/AppData";
 
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
+const removeDir = util.promisify(fs.rmdir);
 
 let win: BrowserWindow | null = null;
 function createWindow() {
@@ -57,8 +58,8 @@ app.on("activate", () => {
     }
 });
 
-ipcMain.handle("TEST", async (event) => {
-    let base64: string = "";
+ipcMain.handle("TEST", async () => {
+    let base64 = "";
     const buffer = await readFile(
         path.resolve(
             storagePath,
@@ -74,7 +75,7 @@ ipcMain.handle("TEST", async (event) => {
 
 const dataPath = path.join(storagePath, JSON_FILE);
 
-ipcMain.handle("GET_DATA", (e) => {
+ipcMain.handle("GET_DATA", () => {
     if (fs.existsSync(dataPath)) {
         return fs.readFileSync(dataPath).toString();
     } else {
@@ -87,7 +88,7 @@ ipcMain.handle("GET_DATA", (e) => {
     }
 });
 
-ipcMain.handle("UPDATE_DATA", (e, data: string) => {
+ipcMain.handle("UPDATE_DATA", (_event, data: string) => {
     fs.writeFileSync(dataPath, data);
 });
 
@@ -105,7 +106,7 @@ ipcMain.handle(
     }
 );
 
-ipcMain.handle("NEW_CATALOG", (event, name: string) => {
+ipcMain.handle("NEW_CATALOG", (_event, name: string) => {
     const targetPath = path.join(storagePath, "catalogs", name);
 
     if (fs.existsSync(targetPath)) {
@@ -114,4 +115,13 @@ ipcMain.handle("NEW_CATALOG", (event, name: string) => {
 
     fs.mkdirSync(targetPath);
     return true;
+});
+
+ipcMain.handle("DELETE_CATALOG", async (_event, name: string) => {
+    const targetPath = path.join(storagePath, "catalogs", name);
+
+    if (!fs.existsSync(targetPath))
+        console.error("DELETE_CATALOG - Catalog doesn't exists");
+
+    await removeDir(targetPath);
 });

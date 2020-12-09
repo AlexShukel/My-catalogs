@@ -16,7 +16,7 @@ const defaultI18n = {
 
 const Catalogs = () => {
     const i18n = useI18n(defaultI18n, "Catalogs");
-    const { array, add } = useCatalogArrayContext<Catalog>("catalogs");
+    const { array, add, remove } = useCatalogArrayContext<Catalog>("catalogs");
 
     const createNewCatalog = useCallback(
         async (name: string, file: File | null) => {
@@ -52,8 +52,20 @@ const Catalogs = () => {
             <Head title={i18n.catalogs} className={css.head} />
 
             {array &&
-                array.map((catalog) => (
-                    <div key={catalog.id}>{catalog.name}</div>
+                array.map((catalog, index) => (
+                    <div key={catalog.id}>
+                        {catalog.name}{" "}
+                        <button
+                            onClick={() => {
+                                remove(index);
+                                ipcRenderer
+                                    .invoke("DELETE_CATALOG", catalog.name)
+                                    .then();
+                            }}
+                        >
+                            delete
+                        </button>
+                    </div>
                 ))}
 
             {/* POPUPS */}
