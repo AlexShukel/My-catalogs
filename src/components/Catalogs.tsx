@@ -65,6 +65,12 @@ const Catalogs = () => {
                         >
                             delete
                         </button>
+                        <img
+                            src={catalog.coverPath}
+                            width={50}
+                            height={50}
+                            alt="There is not cover"
+                        />
                     </div>
                 ))}
 

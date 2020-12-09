@@ -17,6 +17,7 @@ import Draggable from "react-draggable";
 import { useI18n } from "../i18n/I18nContext";
 
 import css from "./NewCatalogForm.module.css";
+import PhotoField from "../fields/PhotoField";
 
 export const PaperComponent = (props: PaperProps) => (
     <Draggable
@@ -54,12 +55,15 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
 
     const i18n = useI18n(defaultI18n, "FolderForm");
     const [name, setName] = useState("");
+    const [img, setImg] = useState("");
     const selectedFile = useRef<File | null>(null);
 
     const uploadPhoto = React.useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             if (e.target.files && e.target.files.length > 0) {
                 selectedFile.current = e.target.files[0];
+
+                setImg(URL.createObjectURL(e.target.files[0]));
             }
         },
         []
@@ -68,6 +72,7 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
     const submitForm = useCallback(() => {
         onSubmit(name, selectedFile.current);
         setName("");
+        setImg("");
         closeForm();
     }, [name, closeForm, onSubmit]);
 
@@ -119,7 +124,12 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
                             onKeyPress={handleKeyPress}
                             inputRef={inputRef}
                         />
-                        {/* <PhotoField handleChange={uploadPhoto} /> */}
+                        <PhotoField
+                            handleChange={uploadPhoto}
+                            img={img}
+                            height={300}
+                            width={400}
+                        />
                     </DialogContent>
                     <DialogActions>
                         <Button
