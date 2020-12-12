@@ -5,7 +5,6 @@ import fs from "fs";
 import util from "util";
 import { AppData } from "./objects/AppData";
 
-const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 const removeDir = util.promisify(fs.rmdir);
 
@@ -52,7 +51,15 @@ app.on("activate", () => {
     }
 });
 
-const storagePath = path.resolve(__dirname, "PHOTO_STORAGE");
+const storagePath = path.resolve(
+    __dirname,
+    // TODO use this in prod
+    // "..",
+    // "..",
+    // "..",
+    // "..",
+    "PHOTO_STORAGE"
+);
 const JSON_FILE = "data.json";
 
 if (!fs.existsSync(storagePath)) {
@@ -85,7 +92,7 @@ ipcMain.handle("UPDATE_DATA", (_event, data: string) => {
 
 ipcMain.handle(
     "UPLOAD_CATALOG_COVER",
-    async (event, catalogName: string, buffer: Buffer, fileName: string) => {
+    async (_event, catalogName: string, buffer: Buffer, fileName: string) => {
         const filePath = path.join(
             storagePath,
             "catalogs",
