@@ -4,5 +4,6 @@
     "directories": {
         "output": "out",
         "buildResources": "dist/renderer"
-    }
+    },
+    "files": ["dist/**/*"]
 }
