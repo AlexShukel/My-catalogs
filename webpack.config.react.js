@@ -1,20 +1,21 @@
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const webpack = require("webpack");
 
 const reactConfig = (env, args) => {
     const isProduction = args.mode === "production";
 
     return {
-        entry: { reactApp: "./src/index.tsx" },
+        entry: { reactApp: path.resolve("src", "index.tsx") },
         target: "electron-renderer",
         devtool: isProduction ? undefined : "source-map",
         output: {
             filename: isProduction
                 ? "[name].[contenthash].js"
                 : "[name].bundle.js",
+            // FIXME renderer doesn't exists in app.asar
             path: path.resolve(__dirname, "dist", "renderer"),
         },
         resolve: {
@@ -53,11 +54,13 @@ const reactConfig = (env, args) => {
             new HtmlWebpackPlugin({
                 template: path.join(__dirname, "src", "index.html"),
             }),
-            new MiniCssExtractPlugin({
-                filename: "[name].[contenthash].css",
-            }),
+            new MiniCssExtractPlugin(),
             isProduction
-                ? new CleanWebpackPlugin()
+                ? new CleanWebpackPlugin({
+                      cleanOnceBeforeBuildPatterns: [
+                          path.join(__dirname, "dist", "renderer", "**"),
+                      ],
+                  })
                 : new webpack.HotModuleReplacementPlugin(),
         ],
     };

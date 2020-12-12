@@ -10,7 +10,7 @@ const electronConfig = (env, args) => {
         node: {
             __dirname: false,
         },
-        entry: { electron: "./src/electron.ts" },
+        entry: { electron: path.resolve("src", "electron.ts") },
         output: {
             path: path.resolve(__dirname, "dist", "main"),
             filename: "[name].bundle.js",

@@ -6,8 +6,8 @@
     "homepage": "./",
     "scripts": {
         "start": "concurrently \"npm run react-start\" \"npm run electron-start\"",
-        "build": "npm run build:react && npm run build:electron",
-        "build:react": "webpack --mode=production",
+        "build": "npm run build:webpack && npm run build:electron",
+        "build:webpack": "webpack --mode=production",
         "build:electron": "electron-builder",
         "react-start": "webpack serve --config webpack.config.react.js --port 3000 --mode development --progress --color",
         "electron-start": "webpack --mode=development --config webpack.config.electron.js && wait-on http://localhost:3000 && electron ./dist/main/electron.bundle.js"
