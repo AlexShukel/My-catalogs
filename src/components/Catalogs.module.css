@@ -1,3 +1,31 @@
 .head {
     justify-content: center;
 }
+
+.item {
+    margin: 20px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+}
+
+.item__delete {
+    position: absolute;
+    bottom: -15px;
+    right: -15px;
+}
+
+.item__name {
+    color: #fff;
+}
+
+.list-item-size {
+    width: 400px;
+    height: 300px;
+}
+
+.photo-size {
+    width: 300px;
+    height: 200px;
+}
