@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { ipcRenderer } from "electron";
 import {
     List,
@@ -11,6 +11,7 @@ import {
     Icon,
     useTheme,
 } from "@material-ui/core";
+import { set } from "lodash";
 
 import Head from "./Head";
 import { useI18n } from "./i18n/I18nContext";
@@ -21,9 +22,10 @@ import { getUniqueId } from "../utils/utils";
 import useEditMode from "./hooks/UseEditMode";
 import { Link } from "./router/Router";
 import PhotoField from "./fields/PhotoField";
+import EditButton from "./buttons/EditButton";
+import { CatalogContext } from "./catalog-context/CatalogContext";
 
 import css from "./Catalogs.module.css";
-import EditButton from "./buttons/EditButton";
 
 const defaultI18n = {
     catalogs: "Catalogs",
@@ -32,6 +34,7 @@ const defaultI18n = {
 
 const Catalogs = () => {
     const i18n = useI18n(defaultI18n, "Catalogs");
+    const context = useContext(CatalogContext);
     const { array, add, remove } = useCatalogArrayContext<Catalog>("catalogs");
     const { isEditing, toggleEditing } = useEditMode();
 
@@ -44,29 +47,53 @@ const Catalogs = () => {
 
     const uploadCatalogCover = useCallback(
         async (file: File | null, name: string) => {
-            const coverPath = file
-                ? await ipcRenderer.invoke(
-                      "UPLOAD_CATALOG_COVER",
-                      name,
-                      await file.arrayBuffer(),
-                      file.name
-                  )
-                : "";
-            return coverPath;
+            if (file) {
+                return await ipcRenderer.invoke(
+                    "UPLOAD_CATALOG_COVER",
+                    name,
+                    await file.arrayBuffer(),
+                    file.name
+                );
+            }
+            return "";
         },
         []
     );
 
+    const deleteCatalogCover = (path: string) => {
+        ipcRenderer.invoke("DELETE_CATALOG_COVER", path);
+    };
+
+    const handlePhotoChange = async (
+        file: File | null,
+        catalogName: string,
+        index: number
+    ) => {
+        const coverPath = await uploadCatalogCover(file, catalogName);
+        if (!coverPath) {
+            deleteCatalogCover(array[index].coverPath);
+        }
+        context.setValues(
+            set(context, `catalogs.${index}`, {
+                ...array[index],
+                coverPath,
+            })
+        );
+    };
+
     const createNewCatalog = useCallback(
-        async (name: string, file: File | null) => {
-            const createdFolder = await ipcRenderer.invoke("NEW_CATALOG", name);
-            const coverPath = await uploadCatalogCover(file, name);
+        async (file: File | null, catalogName: string) => {
+            const createdFolder = await ipcRenderer.invoke(
+                "NEW_CATALOG",
+                catalogName
+            );
+            const coverPath = await uploadCatalogCover(file, catalogName);
             // TODO show snackbar
             if (createdFolder) {
                 console.log("Created folder");
                 add({
                     id: getUniqueId(array, "id"),
-                    name,
+                    name: catalogName,
                     coverPath,
                     folders: [],
                     photos: [],
@@ -104,7 +131,12 @@ const Catalogs = () => {
                                             height={200}
                                             img={catalog.coverPath}
                                             handleChange={(e) => {
-                                                //
+                                                handlePhotoChange(
+                                                    e?.target?.files?.[0] ??
+                                                        null,
+                                                    catalog.name,
+                                                    index
+                                                );
                                             }}
                                             editable={isEditing}
                                         />

@@ -97,6 +97,13 @@ ipcMain.handle(
     }
 );
 
+ipcMain.handle("DELETE_CATALOG_COVER", (_event, filePath: string) => {
+    fs.unlink(filePath, (err) => {
+        if (err) console.error(err);
+        else console.log("Catalog cover deleted");
+    });
+});
+
 ipcMain.handle("NEW_CATALOG", (_event, name: string) => {
     const targetPath = path.join(storagePath, "catalogs", name);
 

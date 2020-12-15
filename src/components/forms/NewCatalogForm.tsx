@@ -37,7 +37,7 @@ const defaultI18n = {
 };
 
 interface Props {
-    onSubmit: (name: string, file: File | null) => void;
+    onSubmit: (file: File | null, catalogName: string) => void;
 }
 
 const NewCatalogForm = ({ onSubmit }: Props) => {
@@ -59,8 +59,8 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
     const selectedFile = useRef<File | null>(null);
 
     const uploadPhoto = React.useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            if (e.target.files && e.target.files.length > 0) {
+        (e: React.ChangeEvent<HTMLInputElement> | null) => {
+            if (e && e.target.files && e.target.files.length > 0) {
                 selectedFile.current = e.target.files[0];
 
                 setImg(URL.createObjectURL(e.target.files[0]));
@@ -70,7 +70,7 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
     );
 
     const submitForm = useCallback(() => {
-        onSubmit(name, selectedFile.current);
+        onSubmit(selectedFile.current, name);
         setName("");
         setImg("");
         closeForm();

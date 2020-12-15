@@ -12,7 +12,7 @@ const defaultI18n = {
 };
 
 interface Props {
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement> | null) => void;
     img: string;
     height: number;
     width: number;
@@ -23,7 +23,6 @@ const PhotoField = ({ handleChange, img, height, width, editable }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const i18n = useI18n(defaultI18n, "photoField");
     const [showButtons, setShowButtons] = useState(false);
-    console.log(img);
 
     return (
         <div style={{ height, width }} className={css["photo-field"]}>
@@ -37,7 +36,12 @@ const PhotoField = ({ handleChange, img, height, width, editable }: Props) => {
                     className={css["image"]}
                 >
                     {showButtons && (
-                        <IconButton>
+                        <IconButton
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleChange(null);
+                            }}
+                        >
                             <Icon>delete</Icon>
                         </IconButton>
                     )}
