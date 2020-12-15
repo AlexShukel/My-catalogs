@@ -129,6 +129,7 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
                             img={img}
                             height={300}
                             width={400}
+                            editable={true}
                         />
                     </DialogContent>
                     <DialogActions>

@@ -1,14 +1,5 @@
 import React, { useCallback } from "react";
 import { ipcRenderer } from "electron";
-
-import Head from "./Head";
-import { useI18n } from "./i18n/I18nContext";
-import { useCatalogArrayContext } from "./hooks/UseCatalogArrayContext";
-import { Catalog } from "../objects/Catalog";
-import NewCatalogForm from "./forms/NewCatalogForm";
-import { getUniqueId } from "../utils/utils";
-
-import css from "./Catalogs.module.css";
 import {
     List,
     ListItem,
@@ -20,22 +11,34 @@ import {
     Icon,
     useTheme,
 } from "@material-ui/core";
+
+import Head from "./Head";
+import { useI18n } from "./i18n/I18nContext";
+import { useCatalogArrayContext } from "./hooks/UseCatalogArrayContext";
+import { Catalog } from "../objects/Catalog";
+import NewCatalogForm from "./forms/NewCatalogForm";
+import { getUniqueId } from "../utils/utils";
 import useEditMode from "./hooks/UseEditMode";
 import { Link } from "./router/Router";
 import PhotoField from "./fields/PhotoField";
 
+import css from "./Catalogs.module.css";
+import EditButton from "./buttons/EditButton";
+
 const defaultI18n = {
     catalogs: "Catalogs",
+    edit: "Edit",
 };
 
 const Catalogs = () => {
     const i18n = useI18n(defaultI18n, "Catalogs");
     const { array, add, remove } = useCatalogArrayContext<Catalog>("catalogs");
-    const { editable, handleEditable } = useEditMode();
+    const { isEditing, toggleEditing } = useEditMode();
 
     const {
         palette: {
             primary: { main: primaryMain },
+            secondary: { main: secondaryMain },
         },
     } = useTheme();
 
@@ -96,14 +99,6 @@ const Catalogs = () => {
                                         }}
                                         className={css["item"]}
                                     >
-                                        {/* <PhotoInput
-                                            path={`catalogs[${index}].image`}
-                                            className={css["photo-size"]}
-                                            label={
-                                                i18n.youCanAddCatalogCoverHere
-                                            }
-                                            editable={editable}
-                                        /> */}
                                         <PhotoField
                                             width={300}
                                             height={200}
@@ -111,6 +106,7 @@ const Catalogs = () => {
                                             handleChange={(e) => {
                                                 //
                                             }}
+                                            editable={isEditing}
                                         />
 
                                         <ListItemText disableTypography>
@@ -121,7 +117,7 @@ const Catalogs = () => {
                                                 {catalog.name}
                                             </Typography>
                                         </ListItemText>
-                                        {editable && (
+                                        {isEditing && (
                                             <Box
                                                 className={css["item__delete"]}
                                             >
@@ -129,6 +125,10 @@ const Catalogs = () => {
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         remove(index);
+                                                    }}
+                                                    style={{
+                                                        color: "#fff",
+                                                        backgroundColor: secondaryMain,
                                                     }}
                                                 >
                                                     <Icon>delete</Icon>
@@ -141,6 +141,9 @@ const Catalogs = () => {
                         </ListItem>
                     ))}
             </List>
+
+            {/* Buttons */}
+            <EditButton isEditing={isEditing} toggleEditing={toggleEditing} />
 
             {/* POPUPS */}
             <NewCatalogForm onSubmit={createNewCatalog} />

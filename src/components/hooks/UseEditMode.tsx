@@ -1,13 +1,13 @@
 import React from "react";
 
 function useEditMode() {
-    const [editable, setEditable] = React.useState(false);
+    const [isEditing, setIsEditing] = React.useState(false);
 
-    const handleEditable = React.useCallback(() => setEditable(!editable), [
-        editable,
+    const toggleEditing = React.useCallback(() => setIsEditing(!isEditing), [
+        isEditing,
     ]);
 
-    return { editable, handleEditable };
+    return { isEditing, toggleEditing };
 }
 
 export default useEditMode;
