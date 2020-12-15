@@ -58,15 +58,28 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
     const [img, setImg] = useState("");
     const selectedFile = useRef<File | null>(null);
 
+    const updatePhoto = useCallback((file: File) => {
+        selectedFile.current = file;
+
+        setImg(URL.createObjectURL(file));
+    }, []);
+
     const uploadPhoto = React.useCallback(
         (e: React.ChangeEvent<HTMLInputElement> | null) => {
             if (e && e.target.files && e.target.files.length > 0) {
-                selectedFile.current = e.target.files[0];
-
-                setImg(URL.createObjectURL(e.target.files[0]));
+                updatePhoto(e.target.files[0]);
             }
         },
-        []
+        [updatePhoto]
+    );
+
+    const handleDrop = React.useCallback(
+        (e: React.DragEvent) => {
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                updatePhoto(e.dataTransfer.files[0]);
+            }
+        },
+        [updatePhoto]
     );
 
     const submitForm = useCallback(() => {
@@ -126,6 +139,7 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
                         />
                         <PhotoField
                             handleChange={uploadPhoto}
+                            handleDrop={handleDrop}
                             img={img}
                             height={300}
                             width={400}

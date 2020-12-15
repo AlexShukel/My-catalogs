@@ -1,5 +1,6 @@
 import { ButtonBase, Icon, IconButton, Typography } from "@material-ui/core";
 import React, { useRef, useState } from "react";
+import DropPlace from "../containers/DropPlace";
 import { useI18n } from "../i18n/I18nContext";
 
 import css from "./PhotoField.module.css";
@@ -13,13 +14,21 @@ const defaultI18n = {
 
 interface Props {
     handleChange: (e: React.ChangeEvent<HTMLInputElement> | null) => void;
+    handleDrop: (e: React.DragEvent) => void;
     img: string;
     height: number;
     width: number;
     editable: boolean;
 }
 
-const PhotoField = ({ handleChange, img, height, width, editable }: Props) => {
+const PhotoField = ({
+    handleChange,
+    handleDrop,
+    img,
+    height,
+    width,
+    editable,
+}: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const i18n = useI18n(defaultI18n, "photoField");
     const [showButtons, setShowButtons] = useState(false);
@@ -46,19 +55,24 @@ const PhotoField = ({ handleChange, img, height, width, editable }: Props) => {
                         </IconButton>
                     )}
                 </div>
+            ) : editable ? (
+                <React.Fragment>
+                    <ButtonBase
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            inputRef.current?.click();
+                        }}
+                        className={css["photo-field__placeholder-wrapper"]}
+                    >
+                        <div>
+                            <Icon>insert_photo</Icon>
+                            <Typography>{i18n.photoFieldLabel}</Typography>
+                        </div>
+                    </ButtonBase>
+                    <DropPlace handleDrop={handleDrop} />
+                </React.Fragment>
             ) : (
-                <ButtonBase
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        inputRef.current?.click();
-                    }}
-                    className={css["photo-field__placeholder-wrapper"]}
-                >
-                    <div>
-                        <Icon>insert_photo</Icon>
-                        <Typography>{i18n.photoFieldLabel}</Typography>
-                    </div>
-                </ButtonBase>
+                <Icon fontSize="large">photo_album</Icon>
             )}
             <input
                 style={{ display: "none" }}

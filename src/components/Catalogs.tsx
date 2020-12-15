@@ -60,26 +60,25 @@ const Catalogs = () => {
         []
     );
 
-    const deleteCatalogCover = (path: string) => {
+    const deleteCatalogCover = useCallback((path: string) => {
         ipcRenderer.invoke("DELETE_CATALOG_COVER", path);
-    };
+    }, []);
 
-    const handlePhotoChange = async (
-        file: File | null,
-        catalogName: string,
-        index: number
-    ) => {
-        const coverPath = await uploadCatalogCover(file, catalogName);
-        if (!coverPath) {
-            deleteCatalogCover(array[index].coverPath);
-        }
-        context.setValues(
-            set(context, `catalogs.${index}`, {
-                ...array[index],
-                coverPath,
-            })
-        );
-    };
+    const handlePhotoChange = useCallback(
+        async (file: File | null, catalogName: string, index: number) => {
+            const coverPath = await uploadCatalogCover(file, catalogName);
+            if (!coverPath) {
+                deleteCatalogCover(array[index].coverPath);
+            }
+            context.setValues(
+                set(context, `catalogs.${index}`, {
+                    ...array[index],
+                    coverPath,
+                })
+            );
+        },
+        [array, context, deleteCatalogCover, uploadCatalogCover]
+    );
 
     const createNewCatalog = useCallback(
         async (file: File | null, catalogName: string) => {
@@ -134,6 +133,13 @@ const Catalogs = () => {
                                                 handlePhotoChange(
                                                     e?.target?.files?.[0] ??
                                                         null,
+                                                    catalog.name,
+                                                    index
+                                                );
+                                            }}
+                                            handleDrop={(e) => {
+                                                handlePhotoChange(
+                                                    e.dataTransfer.files[0],
                                                     catalog.name,
                                                     index
                                                 );
