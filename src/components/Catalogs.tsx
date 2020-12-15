@@ -108,7 +108,6 @@ const Catalogs = () => {
                                             }}
                                             editable={isEditing}
                                         />
-
                                         <ListItemText disableTypography>
                                             <Typography
                                                 className={css["item__name"]}
