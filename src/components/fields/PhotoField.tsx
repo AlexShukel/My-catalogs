@@ -23,6 +23,7 @@ const PhotoField = ({ handleChange, img, height, width, editable }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const i18n = useI18n(defaultI18n, "photoField");
     const [showButtons, setShowButtons] = useState(false);
+    console.log(img);
 
     return (
         <div style={{ height, width }} className={css["photo-field"]}>
@@ -31,7 +32,7 @@ const PhotoField = ({ handleChange, img, height, width, editable }: Props) => {
                     onMouseOver={() => editable && img && setShowButtons(true)}
                     onMouseLeave={() => setShowButtons(false)}
                     style={{
-                        backgroundImage: `url(${img})`,
+                        backgroundImage: `url(${img.replace(/\\/g, "/")})`,
                     }}
                     className={css["image"]}
                 >

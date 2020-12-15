@@ -1,5 +1,5 @@
 import { BrowserWindow, app, ipcMain } from "electron";
-import isDev from "electron-is-dev";
+// import isDev from "electron-is-dev";
 import path from "path";
 import fs from "fs";
 import util from "util";
@@ -20,14 +20,7 @@ function createWindow() {
     });
 
     win.loadURL(
-        isDev
-            ? "http://localhost:3000/"
-            : `file://${path.resolve(
-                  __dirname,
-                  "..",
-                  "renderer",
-                  "index.html"
-              )}`
+        `file://${path.resolve(__dirname, "..", "renderer", "index.html")}`
     );
 
     win.on("closed", () => {
