@@ -1,0 +1,33 @@
+.drop-place {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.drop-place__background {
+    background-color: rgba(103, 168, 228, 0.3);
+    border: 1px dashed #2196f3;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    pointer-events: all;
+    transition: background-color 0.3s ease-in-out, border 0.3s ease-in-out;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+
+.hidden {
+    visibility: hidden;
+}
+.shown {
+    visibility: visible;
+}
+.highlighted {
+    visibility: visible;
+    border: 3px dashed #0069c0;
+}
