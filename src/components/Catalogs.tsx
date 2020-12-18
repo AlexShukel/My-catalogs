@@ -26,6 +26,7 @@ import EditButton from "./buttons/EditButton";
 import { CatalogContext } from "./catalog-context/CatalogContext";
 
 import css from "./Catalogs.module.css";
+import { deleteCatalogCover, uploadCatalogCover } from "../utils/electronUtils";
 
 const defaultI18n = {
     catalogs: "Catalogs",
@@ -41,28 +42,8 @@ const Catalogs = () => {
     const {
         palette: {
             primary: { main: primaryMain },
-            secondary: { main: secondaryMain },
         },
     } = useTheme();
-
-    const uploadCatalogCover = useCallback(
-        async (file: File | null, name: string) => {
-            if (file) {
-                return await ipcRenderer.invoke(
-                    "UPLOAD_CATALOG_COVER",
-                    name,
-                    await file.arrayBuffer(),
-                    file.name
-                );
-            }
-            return "";
-        },
-        []
-    );
-
-    const deleteCatalogCover = useCallback((path: string) => {
-        ipcRenderer.invoke("DELETE_CATALOG_COVER", path);
-    }, []);
 
     const handlePhotoChange = useCallback(
         async (file: File | null, catalogName: string, index: number) => {
@@ -77,7 +58,7 @@ const Catalogs = () => {
                 })
             );
         },
-        [array, context, deleteCatalogCover, uploadCatalogCover]
+        [array, context]
     );
 
     const createNewCatalog = useCallback(
@@ -87,9 +68,7 @@ const Catalogs = () => {
                 catalogName
             );
             const coverPath = await uploadCatalogCover(file, catalogName);
-            // TODO show snackbar
             if (createdFolder) {
-                console.log("Created folder");
                 add({
                     id: getUniqueId(array, "id"),
                     name: catalogName,
@@ -97,12 +76,9 @@ const Catalogs = () => {
                     folders: [],
                     photos: [],
                 });
-                if (coverPath) console.log("Added catalog cover");
-            } else {
-                console.log("FOLDER ALREADY EXISTS");
             }
         },
-        [array, add, uploadCatalogCover]
+        [array, add]
     );
 
     return (
@@ -162,10 +138,6 @@ const Catalogs = () => {
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         remove(index);
-                                                    }}
-                                                    style={{
-                                                        color: "#fff",
-                                                        backgroundColor: secondaryMain,
                                                     }}
                                                 >
                                                     <Icon>delete</Icon>

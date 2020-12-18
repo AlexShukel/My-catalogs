@@ -15,6 +15,7 @@ const defaultI18n = {
 interface Props {
     handleChange: (e: React.ChangeEvent<HTMLInputElement> | null) => void;
     handleDrop: (e: React.DragEvent) => void;
+    handleFullscreen?: () => void;
     img: string;
     height: number;
     width: number;
@@ -24,6 +25,7 @@ interface Props {
 const PhotoField = ({
     handleChange,
     handleDrop,
+    handleFullscreen,
     img,
     height,
     width,
@@ -45,14 +47,26 @@ const PhotoField = ({
                     className={css["image"]}
                 >
                     {showButtons && (
-                        <IconButton
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleChange(null);
-                            }}
-                        >
-                            <Icon>delete</Icon>
-                        </IconButton>
+                        <React.Fragment>
+                            <IconButton
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleChange(null);
+                                }}
+                            >
+                                <Icon>delete</Icon>
+                            </IconButton>
+                            {handleFullscreen && (
+                                <IconButton
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleFullscreen();
+                                    }}
+                                >
+                                    <Icon>delete</Icon>
+                                </IconButton>
+                            )}
+                        </React.Fragment>
                     )}
                 </div>
             ) : editable ? (

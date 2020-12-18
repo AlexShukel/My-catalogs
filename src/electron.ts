@@ -115,11 +115,14 @@ ipcMain.handle("NEW_CATALOG", (_event, name: string) => {
     return true;
 });
 
-ipcMain.handle("DELETE_CATALOG", async (_event, name: string) => {
+ipcMain.handle("DELETE_CATALOG", (_event, name: string) => {
     const targetPath = path.join(storagePath, "catalogs", name);
 
     if (!fs.existsSync(targetPath))
         console.error("DELETE_CATALOG - Catalog doesn't exists");
 
-    await removeDir(targetPath);
+    fs.rmdir(targetPath, (err) => {
+        if (err) console.error(err);
+        console.log("Catalog deleted");
+    });
 });

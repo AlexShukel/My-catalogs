@@ -1,18 +1,25 @@
 import React from "react";
 import { ThemeProvider } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+
 import { Route, Router } from "./components/router/Router";
 import { I18nContext } from "./components/i18n/I18nContext";
 import Catalogs from "./components/Catalogs";
+import { CatalogController } from "./components/catalog-context/CatalogContext";
 
 import "./styles.css";
-import { CatalogController } from "./components/catalog-context/CatalogContext";
 
 const theme = createMuiTheme({
     overrides: {
         MuiListItem: {
             root: {
                 width: undefined,
+            },
+        },
+        MuiIconButton: {
+            root: {
+                color: "#fff",
+                backgroundColor: "#2196f3",
             },
         },
     },
@@ -39,8 +46,8 @@ const App = () => {
                     <Router initialPage="catalogs">
                         <Route location="catalogs">{() => <Catalogs />}</Route>
                         {/* <Route location="folder">
-                        {(params) => <Folder path={params.path} />}
-                    </Route> */}
+                            {(params) => <Folder path={params.path} />}
+                        </Route> */}
                     </Router>
                 </CatalogController>
             </I18nContext.Provider>
