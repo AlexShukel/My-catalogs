@@ -12,7 +12,11 @@ import useEditMode from "./hooks/UseEditMode";
 import EditButton from "./buttons/EditButton";
 import { CatalogContext } from "./catalog-context/CatalogContext";
 import CatalogItem from "./CatalogItem";
-import { createCatalogFolder, saveCatalogCover } from "../utils/electronUtils";
+import {
+    createCatalogFolder,
+    deleteCatalog,
+    saveCatalogCover,
+} from "../utils/electronUtils";
 
 import css from "./Catalogs.module.css";
 
@@ -57,6 +61,14 @@ const Catalogs = () => {
         [array, add]
     );
 
+    const removeCatalog = useCallback(
+        (index: number) => {
+            deleteCatalog(array[index].name);
+            remove(index);
+        },
+        [array, remove]
+    );
+
     return (
         <div>
             <Head title={i18n.catalogs} className={css.head} />
@@ -69,7 +81,7 @@ const Catalogs = () => {
                             catalog={catalog}
                             index={index}
                             isEditing={isEditing}
-                            remove={remove}
+                            remove={removeCatalog}
                             updateCoverPath={updateCoverPath}
                         />
                     ))}

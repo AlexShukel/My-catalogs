@@ -1,5 +1,6 @@
 import { BrowserWindow, app, ipcMain } from "electron";
 // import isDev from "electron-is-dev";
+import rimraf from "rimraf";
 import path from "path";
 import fs from "fs";
 import util from "util";
@@ -121,7 +122,7 @@ ipcMain.handle("DELETE_CATALOG", (_event, name: string) => {
     if (!fs.existsSync(targetPath))
         console.error("DELETE_CATALOG - Catalog doesn't exists");
 
-    fs.rmdir(targetPath, (err) => {
+    rimraf(targetPath, (err) => {
         if (err) console.error(err);
         console.log("Catalog deleted");
     });
