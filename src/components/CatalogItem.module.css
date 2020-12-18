@@ -1,0 +1,22 @@
+.list-item-size {
+    width: 400px;
+    height: 300px;
+}
+
+.item {
+    margin: 20px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+}
+
+.item__delete {
+    position: absolute;
+    bottom: -15px;
+    right: -15px;
+}
+
+.item__name {
+    color: #fff;
+}

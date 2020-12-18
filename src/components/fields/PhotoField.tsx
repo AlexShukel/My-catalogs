@@ -13,8 +13,9 @@ const defaultI18n = {
 };
 
 interface Props {
-    handleChange: (e: React.ChangeEvent<HTMLInputElement> | null) => void;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleDrop: (e: React.DragEvent) => void;
+    handleDelete: () => void;
     handleFullscreen?: () => void;
     img: string;
     height: number;
@@ -25,6 +26,7 @@ interface Props {
 const PhotoField = ({
     handleChange,
     handleDrop,
+    handleDelete,
     handleFullscreen,
     img,
     height,
@@ -51,7 +53,7 @@ const PhotoField = ({
                             <IconButton
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    handleChange(null);
+                                    handleDelete();
                                 }}
                             >
                                 <Icon>delete</Icon>

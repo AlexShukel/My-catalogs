@@ -1,16 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { ipcRenderer } from "electron";
-import {
-    List,
-    ListItem,
-    Paper,
-    ListItemText,
-    Typography,
-    Box,
-    IconButton,
-    Icon,
-    useTheme,
-} from "@material-ui/core";
+import { List } from "@material-ui/core";
 import { set } from "lodash";
 
 import Head from "./Head";
@@ -20,13 +9,12 @@ import { Catalog } from "../objects/Catalog";
 import NewCatalogForm from "./forms/NewCatalogForm";
 import { getUniqueId } from "../utils/utils";
 import useEditMode from "./hooks/UseEditMode";
-import { Link } from "./router/Router";
-import PhotoField from "./fields/PhotoField";
 import EditButton from "./buttons/EditButton";
 import { CatalogContext } from "./catalog-context/CatalogContext";
+import CatalogItem from "./CatalogItem";
+import { createCatalogFolder, saveCatalogCover } from "../utils/electronUtils";
 
 import css from "./Catalogs.module.css";
-import { deleteCatalogCover, uploadCatalogCover } from "../utils/electronUtils";
 
 const defaultI18n = {
     catalogs: "Catalogs",
@@ -39,35 +27,23 @@ const Catalogs = () => {
     const { array, add, remove } = useCatalogArrayContext<Catalog>("catalogs");
     const { isEditing, toggleEditing } = useEditMode();
 
-    const {
-        palette: {
-            primary: { main: primaryMain },
-        },
-    } = useTheme();
-
-    const handlePhotoChange = useCallback(
-        async (file: File | null, catalogName: string, index: number) => {
-            const coverPath = await uploadCatalogCover(file, catalogName);
-            if (!coverPath) {
-                deleteCatalogCover(array[index].coverPath);
-            }
+    const updateCoverPath = useCallback(
+        (index: number, newPath: string) =>
             context.setValues(
                 set(context, `catalogs.${index}`, {
                     ...array[index],
-                    coverPath,
+                    coverPath: newPath,
                 })
-            );
-        },
-        [array, context]
+            ),
+        [context, array]
     );
 
     const createNewCatalog = useCallback(
         async (file: File | null, catalogName: string) => {
-            const createdFolder = await ipcRenderer.invoke(
-                "NEW_CATALOG",
-                catalogName
-            );
-            const coverPath = await uploadCatalogCover(file, catalogName);
+            const createdFolder = await createCatalogFolder(catalogName);
+            const coverPath = file
+                ? await saveCatalogCover(file, catalogName)
+                : "";
             if (createdFolder) {
                 add({
                     id: getUniqueId(array, "id"),
@@ -88,66 +64,14 @@ const Catalogs = () => {
             <List className="list">
                 {array &&
                     array.map((catalog: Catalog, index) => (
-                        <ListItem
+                        <CatalogItem
                             key={catalog.id}
-                            className={css["list-item-size"]}
-                        >
-                            <Link href={`folder?path=catalogs.${index}`}>
-                                {(onClick) => (
-                                    <Paper
-                                        onClick={onClick}
-                                        style={{
-                                            backgroundColor: primaryMain,
-                                        }}
-                                        className={css["item"]}
-                                    >
-                                        <PhotoField
-                                            width={300}
-                                            height={200}
-                                            img={catalog.coverPath}
-                                            handleChange={(e) => {
-                                                handlePhotoChange(
-                                                    e?.target?.files?.[0] ??
-                                                        null,
-                                                    catalog.name,
-                                                    index
-                                                );
-                                            }}
-                                            handleDrop={(e) => {
-                                                handlePhotoChange(
-                                                    e.dataTransfer.files[0],
-                                                    catalog.name,
-                                                    index
-                                                );
-                                            }}
-                                            editable={isEditing}
-                                        />
-                                        <ListItemText disableTypography>
-                                            <Typography
-                                                className={css["item__name"]}
-                                                variant="h4"
-                                            >
-                                                {catalog.name}
-                                            </Typography>
-                                        </ListItemText>
-                                        {isEditing && (
-                                            <Box
-                                                className={css["item__delete"]}
-                                            >
-                                                <IconButton
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        remove(index);
-                                                    }}
-                                                >
-                                                    <Icon>delete</Icon>
-                                                </IconButton>
-                                            </Box>
-                                        )}
-                                    </Paper>
-                                )}
-                            </Link>
-                        </ListItem>
+                            catalog={catalog}
+                            index={index}
+                            isEditing={isEditing}
+                            remove={remove}
+                            updateCoverPath={updateCoverPath}
+                        />
                     ))}
             </List>
 

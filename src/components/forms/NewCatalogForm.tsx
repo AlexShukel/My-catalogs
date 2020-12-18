@@ -15,9 +15,10 @@ import {
 import Draggable from "react-draggable";
 
 import { useI18n } from "../i18n/I18nContext";
+import PhotoField from "../fields/PhotoField";
+import usePhotoField from "../hooks/UsePhotoField";
 
 import css from "./NewCatalogForm.module.css";
-import PhotoField from "../fields/PhotoField";
 
 export const PaperComponent = (props: PaperProps) => (
     <Draggable
@@ -58,35 +59,25 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
     const [img, setImg] = useState("");
     const selectedFile = useRef<File | null>(null);
 
-    const updatePhoto = useCallback((file: File) => {
-        selectedFile.current = file;
+    const { handleDrop, handleChange: uploadPhoto } = usePhotoField(
+        (file: File) => {
+            selectedFile.current = file;
 
-        setImg(URL.createObjectURL(file));
+            setImg(URL.createObjectURL(file));
+        }
+    );
+
+    const handleDelete = useCallback(() => {
+        setImg("");
+        selectedFile.current = null;
     }, []);
-
-    const uploadPhoto = React.useCallback(
-        (e: React.ChangeEvent<HTMLInputElement> | null) => {
-            if (e && e.target.files && e.target.files.length > 0) {
-                updatePhoto(e.target.files[0]);
-            }
-        },
-        [updatePhoto]
-    );
-
-    const handleDrop = React.useCallback(
-        (e: React.DragEvent) => {
-            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                updatePhoto(e.dataTransfer.files[0]);
-            }
-        },
-        [updatePhoto]
-    );
 
     const submitForm = useCallback(() => {
         onSubmit(selectedFile.current, name);
         setName("");
         setImg("");
         closeForm();
+        selectedFile.current = null;
     }, [name, closeForm, onSubmit]);
 
     const handleChange = useCallback(
@@ -140,6 +131,7 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
                         <PhotoField
                             handleChange={uploadPhoto}
                             handleDrop={handleDrop}
+                            handleDelete={handleDelete}
                             img={img}
                             height={300}
                             width={400}
