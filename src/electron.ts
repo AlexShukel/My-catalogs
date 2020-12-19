@@ -93,10 +93,10 @@ ipcMain.handle(
     }
 );
 
-ipcMain.handle("DELETE_CATALOG_COVER", (_event, filePath: string) => {
+ipcMain.handle("DELETE_FILE", (_event, filePath: string) => {
     fs.unlink(filePath, (err) => {
         if (err) console.error(err);
-        else console.log("Catalog cover deleted");
+        else console.log("File deleted");
     });
 });
 

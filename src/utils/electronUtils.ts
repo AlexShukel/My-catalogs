@@ -1,7 +1,7 @@
 import { ipcRenderer } from "electron";
 
-export const deleteCatalogCover = (path: string) => {
-    ipcRenderer.invoke("DELETE_CATALOG_COVER", path);
+export const deleteFile = (path: string) => {
+    ipcRenderer.invoke("DELETE_FILE", path);
 };
 
 export const saveFile = async (file: File, path: string): Promise<string> => {

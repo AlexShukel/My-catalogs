@@ -13,7 +13,7 @@ import {
 import { Catalog } from "../objects/Catalog";
 import PhotoField from "./fields/PhotoField";
 import { Link } from "./router/Router";
-import { deleteCatalogCover, saveFile } from "../utils/electronUtils";
+import { deleteFile, saveFile } from "../utils/electronUtils";
 
 import css from "./CatalogItem.module.css";
 import usePhotoField from "./hooks/UsePhotoField";
@@ -51,7 +51,7 @@ const CatalogItem = ({
     );
 
     const handleDelete = useCallback(() => {
-        deleteCatalogCover(catalog.coverPath);
+        deleteFile(catalog.coverPath);
         updateCoverPath(index, "");
     }, [catalog.coverPath, index, updateCoverPath]);
 
