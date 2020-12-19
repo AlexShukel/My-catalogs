@@ -76,15 +76,24 @@ const FolderAddButton = ({ path, namedPath }: Props) => {
                     icon: iconPath,
                 });
             }
+            setAnchorEl(null);
         },
         [addFolder, folders, namedPath]
     );
 
     const createNewPhoto = useCallback(
-        (file: File | null, name: string, description: string) => {
-            console.log(file?.name, name, description);
+        async (file: File | null, description: string) => {
+            const photoPath = file
+                ? await saveFile(file, `catalogs/${namedPath}/${file.name}`)
+                : "";
+            addPhoto({
+                id: getUniqueId(photos, "id"),
+                photo: photoPath,
+                description,
+            });
+            setAnchorEl(null);
         },
-        []
+        [addPhoto, namedPath, photos]
     );
 
     return (

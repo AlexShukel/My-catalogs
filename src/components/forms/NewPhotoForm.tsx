@@ -19,46 +19,30 @@ import css from "./Forms.module.css";
 const defaultI18n = {
     photo: "Photo",
     newPhoto: "New photo",
-    name: "Name",
     submit: "Submit",
     description: "Description",
 };
 
 interface Props {
-    onSubmit: (file: File | null, name: string, description: string) => void;
+    onSubmit: (file: File | null, description: string) => void;
 }
 
 const NewPhotoForm = ({ onSubmit }: Props) => {
     const [formOpened, setFormOpened] = useState(false);
     const i18n = useI18n(defaultI18n, "NewFolderForm");
-    const [description, setDescription] = useState("");
-
-    const handleDescriptionChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) =>
-            setDescription(e.target.value),
-        []
-    );
-
-    const submit = useCallback(
-        (file: File | null, name: string) => {
-            onSubmit(file, name, description);
-            setDescription("");
-        },
-        [description, onSubmit]
-    );
 
     const {
-        handleChange,
+        handleChange: handleDescriptionChange,
         handleDelete,
         handleDrop,
         img,
         inputRef,
-        name,
+        name: description,
         setImg,
-        setName,
+        setName: setDescription,
         submitForm,
         uploadPhoto,
-    } = usePhotoForm(submit, () => setFormOpened(false));
+    } = usePhotoForm(onSubmit, () => setFormOpened(false));
 
     const openForm = useCallback(() => {
         setFormOpened(true);
@@ -67,10 +51,9 @@ const NewPhotoForm = ({ onSubmit }: Props) => {
 
     const closeForm = useCallback(() => {
         setFormOpened(false);
-        setName("");
         setImg("");
         setDescription("");
-    }, [setImg, setName]);
+    }, [setImg, setDescription]);
 
     return (
         <React.Fragment>
@@ -90,14 +73,6 @@ const NewPhotoForm = ({ onSubmit }: Props) => {
                     <Typography variant="h5">{i18n.newPhoto}</Typography>
                 </DialogTitle>
                 <DialogContent>
-                    <TextField
-                        fullWidth
-                        label={i18n.name}
-                        value={name}
-                        onChange={handleChange}
-                        inputRef={inputRef}
-                    />
-
                     <TextField
                         fullWidth
                         label={i18n.description}

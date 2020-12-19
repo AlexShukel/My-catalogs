@@ -13,7 +13,7 @@ const PhotosList = ({ path }: Props) => {
     return photos.length > 0 ? (
         <List>
             {photos.map((photo, index) => (
-                <ListItem key={photo.id}></ListItem>
+                <ListItem key={photo.id}>{photo.description}</ListItem>
             ))}
         </List>
     ) : null;
