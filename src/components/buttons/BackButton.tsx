@@ -15,7 +15,7 @@ const BackButton = () => {
         <Tooltip title={i18n.back}>
             <Box className="button-margin">
                 <IconButton onClick={back}>
-                    <Icon fontSize="large">arrow_back</Icon>
+                    <Icon>arrow_back</Icon>
                 </IconButton>
             </Box>
         </Tooltip>
