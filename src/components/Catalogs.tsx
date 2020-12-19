@@ -12,11 +12,7 @@ import useEditMode from "./hooks/UseEditMode";
 import EditButton from "./buttons/EditButton";
 import { CatalogContext } from "./catalog-context/CatalogContext";
 import CatalogItem from "./CatalogItem";
-import {
-    createFolder,
-    deleteFolder,
-    saveCatalogCover,
-} from "../utils/electronUtils";
+import { createFolder, deleteFolder, saveFile } from "../utils/electronUtils";
 
 import css from "./Catalogs.module.css";
 
@@ -46,7 +42,7 @@ const Catalogs = () => {
         async (file: File | null, catalogName: string) => {
             const createdFolder = await createFolder(`catalogs/${catalogName}`);
             const coverPath = file
-                ? await saveCatalogCover(file, catalogName)
+                ? await saveFile(file, `catalogs/${catalogName}/${file.name}`)
                 : "";
             if (createdFolder) {
                 add({

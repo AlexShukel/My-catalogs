@@ -85,16 +85,11 @@ ipcMain.handle("UPDATE_DATA", (_event, data: string) => {
 });
 
 ipcMain.handle(
-    "UPLOAD_CATALOG_COVER",
-    async (_event, catalogName: string, buffer: Buffer, fileName: string) => {
-        const filePath = path.join(
-            storagePath,
-            "catalogs",
-            catalogName,
-            fileName
-        );
-        await writeFile(filePath, Buffer.from(buffer));
-        return filePath;
+    "UPLOAD_FILE",
+    async (_event, buffer: Buffer, filePath: string) => {
+        const targetPath = path.join(storagePath, filePath);
+        await writeFile(targetPath, Buffer.from(buffer));
+        return targetPath;
     }
 );
 

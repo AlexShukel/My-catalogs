@@ -13,7 +13,7 @@ import {
 import { Catalog } from "../objects/Catalog";
 import PhotoField from "./fields/PhotoField";
 import { Link } from "./router/Router";
-import { deleteCatalogCover, saveCatalogCover } from "../utils/electronUtils";
+import { deleteCatalogCover, saveFile } from "../utils/electronUtils";
 
 import css from "./CatalogItem.module.css";
 import usePhotoField from "./hooks/UsePhotoField";
@@ -41,7 +41,10 @@ const CatalogItem = ({
 
     const catalogCoverUploader = useCallback(
         async (file: File) => {
-            const newPath = await saveCatalogCover(file, catalog.name);
+            const newPath = await saveFile(
+                file,
+                `catalogs/${catalog.name}/${file.name}`
+            );
             updateCoverPath(index, newPath);
         },
         [index, updateCoverPath, catalog.name]

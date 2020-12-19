@@ -4,15 +4,11 @@ export const deleteCatalogCover = (path: string) => {
     ipcRenderer.invoke("DELETE_CATALOG_COVER", path);
 };
 
-export const saveCatalogCover = async (
-    file: File,
-    name: string
-): Promise<string> => {
+export const saveFile = async (file: File, path: string): Promise<string> => {
     return await ipcRenderer.invoke(
-        "UPLOAD_CATALOG_COVER",
-        name,
+        "UPLOAD_FILE",
         await file.arrayBuffer(),
-        file.name
+        path
     );
 };
 
