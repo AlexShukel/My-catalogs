@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
     Button,
     Dialog,
@@ -21,15 +21,15 @@ const defaultI18n = {
     name: "Name",
     submit: "Submit",
     customIcon: "You can add custom icon",
+    category: "Category",
 };
 
 interface Props {
-    open: boolean;
-    onClose: () => void;
     onSubmit: (file: File | null, name: string) => void;
 }
 
-const NewFolderForm = ({ onClose, onSubmit, open }: Props) => {
+const NewFolderForm = ({ onSubmit }: Props) => {
+    const [formOpened, setFormOpened] = useState(false);
     const i18n = useI18n(defaultI18n, "NewFolderForm");
 
     const {
@@ -44,58 +44,72 @@ const NewFolderForm = ({ onClose, onSubmit, open }: Props) => {
         setName,
         submitForm,
         uploadPhoto,
-    } = useFolderForm(onSubmit, onClose);
+    } = useFolderForm(onSubmit, () => setFormOpened(false));
+
+    const openForm = useCallback(() => {
+        setFormOpened(true);
+        setTimeout(() => inputRef.current?.focus());
+    }, [inputRef]);
 
     const closeForm = useCallback(() => {
-        onClose();
+        setFormOpened(false);
         setName("");
         setImg("");
-    }, [onClose, setName, setImg]);
+    }, [setImg, setName]);
 
     return (
-        <Dialog open={open} onClose={closeForm} PaperComponent={PaperComponent}>
-            <DialogTitle
-                disableTypography
-                id="draggable-dialog-title"
-                className={css["draggable"]}
+        <React.Fragment>
+            <Button onClick={openForm} color="primary" variant="contained">
+                {i18n.category}
+            </Button>
+            <Dialog
+                open={formOpened}
+                onClose={closeForm}
+                PaperComponent={PaperComponent}
             >
-                <Typography variant="h5">{i18n.newCategory}</Typography>
-            </DialogTitle>
-            <DialogContent>
-                <TextField
-                    fullWidth
-                    label={i18n.name}
-                    value={name}
-                    onChange={handleChange}
-                    onKeyPress={handleKeyPress}
-                    inputRef={inputRef}
-                />
-
-                <div className={css["folder-icon"]}>
-                    <Typography>{i18n.customIcon + ":"}</Typography>
-                    <PhotoField
-                        handleChange={uploadPhoto}
-                        handleDrop={handleDrop}
-                        handleDelete={handleDelete}
-                        img={img}
-                        height={50}
-                        width={50}
-                        editable={true}
-                        label=""
-                        className={css["folder-icon__icon"]}
-                    />
-                </div>
-            </DialogContent>
-            <DialogActions>
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={submitForm}
+                <DialogTitle
+                    disableTypography
+                    id="draggable-dialog-title"
+                    className={css["draggable"]}
                 >
-                    {i18n.submit}
-                </Button>
-            </DialogActions>
-        </Dialog>
+                    <Typography variant="h5">{i18n.newCategory}</Typography>
+                </DialogTitle>
+                <DialogContent>
+                    <TextField
+                        fullWidth
+                        label={i18n.name}
+                        value={name}
+                        onChange={handleChange}
+                        onKeyPress={handleKeyPress}
+                        inputRef={inputRef}
+                    />
+
+                    <div className={css["folder-icon"]}>
+                        <Typography>{i18n.customIcon + ":"}</Typography>
+                        <PhotoField
+                            handleChange={uploadPhoto}
+                            handleDrop={handleDrop}
+                            handleDelete={handleDelete}
+                            img={img}
+                            height={50}
+                            width={50}
+                            editable={true}
+                            label=""
+                            className={css["folder-icon__icon"]}
+                        />
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={submitForm}
+                    >
+                        {i18n.submit}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </React.Fragment>
     );
 };
 

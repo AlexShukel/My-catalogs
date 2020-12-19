@@ -12,19 +12,17 @@ import { useI18n } from "../i18n/I18nContext";
 import { useCatalogArrayContext } from "../hooks/UseCatalogArrayContext";
 import { IFolder } from "../../objects/IFolder";
 import { Photo } from "../../objects/Photo";
-import useOpenDialogState from "../hooks/UseOpenDialogState";
 import { getUniqueId } from "../../utils/utils";
 import NewFolderForm from "../forms/NewFolderForm";
+import { createFolder, saveFile } from "../../utils/electronUtils";
 
 import css from "./Buttons.module.css";
-import { createFolder, saveFile } from "../../utils/electronUtils";
 
 const POPPER_TRANSITION = 200;
 const FOLDER_ICON_PATH = "FOLDER_ICON";
 
 const defaultI18n = {
     new: "New...",
-    category: "Category",
     photo: "Photo",
 };
 
@@ -46,17 +44,6 @@ const FolderAddButton = ({ path, namedPath }: Props) => {
         null
     );
     const closePopper = React.useCallback(() => setAnchorEl(null), []);
-
-    const {
-        open: folderFormOpened,
-        openDialog: openFolderForm,
-        closeDialog: closeFolderForm,
-    } = useOpenDialogState();
-    const {
-        open: photoFormOpened,
-        openDialog: openPhotoForm,
-        closeDialog: closePhotoForm,
-    } = useOpenDialogState();
 
     const handleAddClick = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -121,14 +108,8 @@ const FolderAddButton = ({ path, namedPath }: Props) => {
                                     flexDirection: "column",
                                 }}
                             >
-                                <Button
-                                    onClick={openFolderForm}
-                                    color="primary"
-                                    variant="contained"
-                                >
-                                    {i18n.category}
-                                </Button>
-                                <Button onClick={openPhotoForm} color="primary">
+                                <NewFolderForm onSubmit={createNewFolder} />
+                                <Button onClick={() => {}} color="primary">
                                     {i18n.photo}
                                 </Button>
                             </Paper>
@@ -137,16 +118,9 @@ const FolderAddButton = ({ path, namedPath }: Props) => {
                 )}
             </Popper>
 
-            <NewFolderForm
-                open={folderFormOpened}
-                onClose={closeFolderForm}
-                onSubmit={createNewFolder}
-            />
-
             {/* <NewPhotoForm
                 open={photoFormOpened}
                 onClose={closePhotoForm}
-                id={photos ? getUniqueId(photos, "id") : 0}
                 onSubmit={addPhoto}
             /> */}
         </React.Fragment>

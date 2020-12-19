@@ -58,7 +58,7 @@ const FoldersList = ({ path, namedPath, isEditing }: Props) => {
                                     <IconButton
                                         onClick={() => removeFolder(index)}
                                     >
-                                        <Icon>delete</Icon>
+                                        <Icon fontSize="small">delete</Icon>
                                     </IconButton>
                                 </ListItemSecondaryAction>
                             )}

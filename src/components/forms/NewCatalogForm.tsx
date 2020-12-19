@@ -84,49 +84,47 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
                     {i18n.createNewCatalog}
                 </Button>
             </Box>
-            {formOpened && (
-                <Dialog
-                    open={true}
-                    PaperComponent={PaperComponent}
-                    onClose={closeForm}
+            <Dialog
+                open={formOpened}
+                PaperComponent={PaperComponent}
+                onClose={closeForm}
+            >
+                <DialogTitle
+                    disableTypography
+                    id="draggable-dialog-title"
+                    className={css["draggable"]}
                 >
-                    <DialogTitle
-                        disableTypography
-                        id="draggable-dialog-title"
-                        className={css["draggable"]}
+                    <Typography variant="h5">{i18n.newCatalog}</Typography>
+                </DialogTitle>
+                <DialogContent>
+                    <TextField
+                        fullWidth
+                        label={i18n.name}
+                        value={name}
+                        onChange={handleChange}
+                        onKeyPress={handleKeyPress}
+                        inputRef={inputRef}
+                    />
+                    <PhotoField
+                        handleChange={uploadPhoto}
+                        handleDrop={handleDrop}
+                        handleDelete={handleDelete}
+                        img={img}
+                        height={300}
+                        width={400}
+                        editable={true}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={submitForm}
                     >
-                        <Typography variant="h5">{i18n.newCatalog}</Typography>
-                    </DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            fullWidth
-                            label={i18n.name}
-                            value={name}
-                            onChange={handleChange}
-                            onKeyPress={handleKeyPress}
-                            inputRef={inputRef}
-                        />
-                        <PhotoField
-                            handleChange={uploadPhoto}
-                            handleDrop={handleDrop}
-                            handleDelete={handleDelete}
-                            img={img}
-                            height={300}
-                            width={400}
-                            editable={true}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={submitForm}
-                        >
-                            {i18n.submit}
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            )}
+                        {i18n.submit}
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </React.Fragment>
     );
 };
