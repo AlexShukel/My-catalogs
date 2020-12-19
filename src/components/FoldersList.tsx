@@ -24,7 +24,7 @@ const FoldersList = ({ path, isEditing }: Props) => {
     const { array: folders, remove } = useCatalogArrayContext<IFolder>(
         `${path}.folders`
     );
-    return (
+    return folders.length > 0 ? (
         <List>
             {folders.map(({ icon, id, name }, index) => (
                 <Link key={id} href={`folder?path=${path}.folders.${index}`}>
@@ -54,7 +54,7 @@ const FoldersList = ({ path, isEditing }: Props) => {
                 </Link>
             ))}
         </List>
-    );
+    ) : null;
 };
 
 export default FoldersList;

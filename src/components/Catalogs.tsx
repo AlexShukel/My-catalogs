@@ -13,8 +13,8 @@ import EditButton from "./buttons/EditButton";
 import { CatalogContext } from "./catalog-context/CatalogContext";
 import CatalogItem from "./CatalogItem";
 import {
-    createCatalogFolder,
-    deleteCatalog,
+    createFolder,
+    deleteFolder,
     saveCatalogCover,
 } from "../utils/electronUtils";
 
@@ -44,7 +44,7 @@ const Catalogs = () => {
 
     const createNewCatalog = useCallback(
         async (file: File | null, catalogName: string) => {
-            const createdFolder = await createCatalogFolder(catalogName);
+            const createdFolder = await createFolder(`catalogs/${catalogName}`);
             const coverPath = file
                 ? await saveCatalogCover(file, catalogName)
                 : "";
@@ -63,7 +63,7 @@ const Catalogs = () => {
 
     const removeCatalog = useCallback(
         (index: number) => {
-            deleteCatalog(array[index].name);
+            deleteFolder(`catalogs/${array[index].name}`);
             remove(index);
         },
         [array, remove]

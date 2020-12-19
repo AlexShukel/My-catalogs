@@ -2,7 +2,7 @@ import { Box, Button, Icon } from "@material-ui/core";
 import React from "react";
 import { useI18n } from "../i18n/I18nContext";
 
-import css from "./EditButton.module.css";
+import css from "./Buttons.module.css";
 
 const defaultI18n = {
     edit: "Edit",

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
     Box,
     Button,
@@ -16,9 +16,9 @@ import Draggable from "react-draggable";
 
 import { useI18n } from "../i18n/I18nContext";
 import PhotoField from "../fields/PhotoField";
-import usePhotoField from "../hooks/UsePhotoField";
+import useFolderForm from "../hooks/UseFolderForm";
 
-import css from "./NewCatalogForm.module.css";
+import css from "./Forms.module.css";
 
 export const PaperComponent = (props: PaperProps) => (
     <Draggable
@@ -35,6 +35,7 @@ const defaultI18n = {
     name: "Name",
     required: "Required",
     createNewCatalog: "Create new catalog",
+    submit: "Submit",
 };
 
 interface Props {
@@ -42,57 +43,34 @@ interface Props {
 }
 
 const NewCatalogForm = ({ onSubmit }: Props) => {
-    const inputRef = React.useRef<HTMLInputElement>();
-
     const [formOpened, setFormOpened] = useState(false);
+
+    const i18n = useI18n(defaultI18n, "FolderForm");
+
+    const {
+        setName,
+        setImg,
+        inputRef,
+        handleChange,
+        handleDelete,
+        handleDrop,
+        handleKeyPress,
+        img,
+        name,
+        submitForm,
+        uploadPhoto,
+    } = useFolderForm(onSubmit, () => setFormOpened(false));
+
     const openForm = useCallback(() => {
         setFormOpened(true);
         setTimeout(() => inputRef.current?.focus());
-    }, []);
+    }, [inputRef]);
+
     const closeForm = useCallback(() => {
         setFormOpened(false);
         setName("");
-    }, []);
-
-    const i18n = useI18n(defaultI18n, "FolderForm");
-    const [name, setName] = useState("");
-    const [img, setImg] = useState("");
-    const selectedFile = useRef<File | null>(null);
-
-    const { handleDrop, handleChange: uploadPhoto } = usePhotoField(
-        (file: File) => {
-            selectedFile.current = file;
-
-            setImg(URL.createObjectURL(file));
-        }
-    );
-
-    const handleDelete = useCallback(() => {
         setImg("");
-        selectedFile.current = null;
-    }, []);
-
-    const submitForm = useCallback(() => {
-        onSubmit(selectedFile.current, name);
-        setName("");
-        setImg("");
-        closeForm();
-        selectedFile.current = null;
-    }, [name, closeForm, onSubmit]);
-
-    const handleChange = useCallback(
-        (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
-            setName(e.target.value),
-
-        []
-    );
-
-    const handleKeyPress = useCallback(
-        (e: React.KeyboardEvent) => {
-            if (e.key === "Enter") submitForm();
-        },
-        [submitForm]
-    );
+    }, [setImg, setName]);
 
     return (
         <React.Fragment>
@@ -144,7 +122,7 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
                             color="secondary"
                             onClick={submitForm}
                         >
-                            submit
+                            {i18n.submit}
                         </Button>
                     </DialogActions>
                 </Dialog>

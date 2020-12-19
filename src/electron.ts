@@ -105,8 +105,9 @@ ipcMain.handle("DELETE_CATALOG_COVER", (_event, filePath: string) => {
     });
 });
 
-ipcMain.handle("NEW_CATALOG", (_event, name: string) => {
-    const targetPath = path.join(storagePath, "catalogs", name);
+// Returns false if folder exists and true if folder created
+ipcMain.handle("CREATE_FOLDER", (_event, folderPath: string) => {
+    const targetPath = path.join(storagePath, folderPath);
 
     if (fs.existsSync(targetPath)) {
         return false;
@@ -116,8 +117,8 @@ ipcMain.handle("NEW_CATALOG", (_event, name: string) => {
     return true;
 });
 
-ipcMain.handle("DELETE_CATALOG", (_event, name: string) => {
-    const targetPath = path.join(storagePath, "catalogs", name);
+ipcMain.handle("DELETE_FOLDER", (_event, folderPath: string) => {
+    const targetPath = path.join(storagePath, folderPath);
 
     if (!fs.existsSync(targetPath))
         console.error("DELETE_CATALOG - Catalog doesn't exists");

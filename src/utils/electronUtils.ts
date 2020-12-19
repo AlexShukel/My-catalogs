@@ -16,11 +16,11 @@ export const saveCatalogCover = async (
     );
 };
 
-export const createCatalogFolder = async (name: string): Promise<string> => {
-    const createdFolder = await ipcRenderer.invoke("NEW_CATALOG", name);
+export const createFolder = async (path: string): Promise<string> => {
+    const createdFolder = await ipcRenderer.invoke("CREATE_FOLDER", path);
     return createdFolder;
 };
 
-export const deleteCatalog = (name: string) => {
-    ipcRenderer.invoke("DELETE_CATALOG", name);
+export const deleteFolder = (path: string) => {
+    ipcRenderer.invoke("DELETE_FOLDER", path);
 };
