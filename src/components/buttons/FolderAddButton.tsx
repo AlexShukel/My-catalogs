@@ -17,6 +17,7 @@ import NewFolderForm from "../forms/NewFolderForm";
 import { createFolder, saveFile } from "../../utils/electronUtils";
 
 import css from "./Buttons.module.css";
+import NewPhotoForm from "../forms/NewPhotoForm";
 
 const POPPER_TRANSITION = 200;
 const FOLDER_ICON_PATH = "FOLDER_ICON";
@@ -79,6 +80,13 @@ const FolderAddButton = ({ path, namedPath }: Props) => {
         [addFolder, folders, namedPath]
     );
 
+    const createNewPhoto = useCallback(
+        (file: File | null, name: string, description: string) => {
+            console.log(file?.name, name, description);
+        },
+        []
+    );
+
     return (
         <React.Fragment>
             <Box className={css["add-btn"]}>
@@ -109,20 +117,12 @@ const FolderAddButton = ({ path, namedPath }: Props) => {
                                 }}
                             >
                                 <NewFolderForm onSubmit={createNewFolder} />
-                                <Button onClick={() => {}} color="primary">
-                                    {i18n.photo}
-                                </Button>
+                                <NewPhotoForm onSubmit={createNewPhoto} />
                             </Paper>
                         </Fade>
                     </ClickAwayListener>
                 )}
             </Popper>
-
-            {/* <NewPhotoForm
-                open={photoFormOpened}
-                onClose={closePhotoForm}
-                onSubmit={addPhoto}
-            /> */}
         </React.Fragment>
     );
 };
