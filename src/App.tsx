@@ -20,6 +20,9 @@ const theme = createMuiTheme({
             root: {
                 color: "#fff",
                 backgroundColor: "#2196f3",
+                "&:hover": {
+                    backgroundColor: "#0266f2",
+                },
             },
         },
     },
