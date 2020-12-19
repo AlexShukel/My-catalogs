@@ -12,6 +12,7 @@ import {
 import { useI18n } from "../i18n/I18nContext";
 import useFolderForm from "../hooks/UseFolderForm";
 import PhotoField from "../fields/PhotoField";
+import { PaperComponent } from "./NewCatalogForm";
 
 import css from "./Forms.module.css";
 
@@ -19,16 +20,16 @@ const defaultI18n = {
     newCategory: "New category",
     name: "Name",
     submit: "Submit",
+    customIcon: "You can add custom icon",
 };
 
 interface Props {
     open: boolean;
     onClose: () => void;
-    id: number;
     onSubmit: (file: File | null, name: string) => void;
 }
 
-const NewFolderForm = ({ id, onClose, onSubmit, open }: Props) => {
+const NewFolderForm = ({ onClose, onSubmit, open }: Props) => {
     const i18n = useI18n(defaultI18n, "NewFolderForm");
 
     const {
@@ -52,7 +53,7 @@ const NewFolderForm = ({ id, onClose, onSubmit, open }: Props) => {
     }, [onClose, setName, setImg]);
 
     return (
-        <Dialog open={open} onClose={closeForm}>
+        <Dialog open={open} onClose={closeForm} PaperComponent={PaperComponent}>
             <DialogTitle
                 disableTypography
                 id="draggable-dialog-title"
@@ -69,15 +70,21 @@ const NewFolderForm = ({ id, onClose, onSubmit, open }: Props) => {
                     onKeyPress={handleKeyPress}
                     inputRef={inputRef}
                 />
-                <PhotoField
-                    handleChange={uploadPhoto}
-                    handleDrop={handleDrop}
-                    handleDelete={handleDelete}
-                    img={img}
-                    height={50}
-                    width={50}
-                    editable={true}
-                />
+
+                <div className={css["folder-icon"]}>
+                    <Typography>{i18n.customIcon + ":"}</Typography>
+                    <PhotoField
+                        handleChange={uploadPhoto}
+                        handleDrop={handleDrop}
+                        handleDelete={handleDelete}
+                        img={img}
+                        height={50}
+                        width={50}
+                        editable={true}
+                        label=""
+                        className={css["folder-icon__icon"]}
+                    />
+                </div>
             </DialogContent>
             <DialogActions>
                 <Button

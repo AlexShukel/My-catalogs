@@ -1,3 +1,4 @@
+import { get } from "lodash";
 import React, { useContext } from "react";
 
 import EditButton from "./buttons/EditButton";
@@ -16,16 +17,26 @@ const Folder = ({ path }: Props) => {
     const context = useContext(CatalogContext);
     const { isEditing, toggleEditing } = useEditMode();
 
+    const namedPath = React.useMemo(() => {
+        let iterablePath = path;
+        const names = [];
+        while (iterablePath !== "") {
+            names.unshift(get(context, iterablePath).name);
+            iterablePath = iterablePath.replace(/\.?\w+\.\d+$/g, "");
+        }
+        return names.join("/");
+    }, [path, context]);
+
     return (
         <div>
-            <Head title="Folder test" />
+            <Head title={namedPath} />
 
             <FoldersList path={path} isEditing={isEditing} />
 
             <PhotosList path={path} />
 
             {/* BUTTONS */}
-            <FolderAddButton path={path} />
+            <FolderAddButton path={path} namedPath={namedPath} />
             <EditButton isEditing={isEditing} toggleEditing={toggleEditing} />
         </div>
     );

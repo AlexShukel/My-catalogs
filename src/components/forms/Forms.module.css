@@ -8,3 +8,14 @@
     left: 0;
     margin: 30px;
 }
+
+.folder-icon {
+    width: 350px;
+    display: flex;
+    align-items: center;
+    margin: 20px;
+}
+
+.folder-icon__icon {
+    margin-left: 10px;
+}

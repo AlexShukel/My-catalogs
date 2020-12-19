@@ -26,6 +26,11 @@ const theme = createMuiTheme({
                 },
             },
         },
+        MuiDialogContent: {
+            root: {
+                overflowY: "unset",
+            },
+        },
     },
     palette: {
         primary: {

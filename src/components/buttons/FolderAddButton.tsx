@@ -17,9 +17,10 @@ import { getUniqueId } from "../../utils/utils";
 import NewFolderForm from "../forms/NewFolderForm";
 
 import css from "./Buttons.module.css";
-import { createFolder } from "../../utils/electronUtils";
+import { createFolder, saveFile } from "../../utils/electronUtils";
 
 const POPPER_TRANSITION = 200;
+const FOLDER_ICON_PATH = "FOLDER_ICON";
 
 const defaultI18n = {
     new: "New...",
@@ -29,9 +30,10 @@ const defaultI18n = {
 
 interface Props {
     path: string;
+    namedPath: string;
 }
 
-const FolderAddButton = ({ path }: Props) => {
+const FolderAddButton = ({ path, namedPath }: Props) => {
     const i18n = useI18n(defaultI18n, "FolderAddButton");
     const { add: addPhoto, array: photos } = useCatalogArrayContext<Photo>(
         `${path}.photos`
@@ -68,9 +70,26 @@ const FolderAddButton = ({ path }: Props) => {
 
     const createNewFolder = useCallback(
         async (file: File | null, name: string) => {
-            const createdFolder = await createFolder(`${path}/${name}`);
+            const createdFolder = await createFolder(
+                `catalogs/${namedPath}/${name}`
+            );
+            const iconPath = file
+                ? await saveFile(
+                      file,
+                      `catalogs/${namedPath}/${name}/${FOLDER_ICON_PATH}`
+                  )
+                : "";
+            if (createdFolder) {
+                addFolder({
+                    id: getUniqueId(folders, "id"),
+                    folders: [],
+                    photos: [],
+                    name,
+                    icon: iconPath,
+                });
+            }
         },
-        []
+        [addFolder, folders, namedPath]
     );
 
     return (
@@ -121,7 +140,6 @@ const FolderAddButton = ({ path }: Props) => {
             <NewFolderForm
                 open={folderFormOpened}
                 onClose={closeFolderForm}
-                id={folders ? getUniqueId(folders, "id") : 0}
                 onSubmit={createNewFolder}
             />
 

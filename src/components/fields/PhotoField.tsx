@@ -1,4 +1,5 @@
 import { ButtonBase, Icon, IconButton, Typography } from "@material-ui/core";
+import classNames from "classnames";
 import React, { useRef, useState } from "react";
 import DropPlace from "../containers/DropPlace";
 import { useI18n } from "../i18n/I18nContext";
@@ -16,29 +17,36 @@ interface Props {
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleDrop: (e: React.DragEvent) => void;
     handleDelete: () => void;
-    handleFullscreen?: () => void;
     img: string;
     height: number;
     width: number;
     editable: boolean;
+    handleFullscreen?: () => void;
+    label?: string;
+    className?: string;
 }
 
 const PhotoField = ({
     handleChange,
     handleDrop,
     handleDelete,
-    handleFullscreen,
     img,
     height,
     width,
     editable,
+    handleFullscreen,
+    label,
+    className,
 }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const i18n = useI18n(defaultI18n, "photoField");
     const [showButtons, setShowButtons] = useState(false);
 
     return (
-        <div style={{ height, width }} className={css["photo-field"]}>
+        <div
+            style={{ height, width }}
+            className={classNames(className, css["photo-field"])}
+        >
             {img ? (
                 <div
                     onMouseOver={() => editable && img && setShowButtons(true)}
@@ -82,7 +90,9 @@ const PhotoField = ({
                     >
                         <div>
                             <Icon>insert_photo</Icon>
-                            <Typography>{i18n.photoFieldLabel}</Typography>
+                            <Typography>
+                                {label ?? i18n.photoFieldLabel}
+                            </Typography>
                         </div>
                     </ButtonBase>
                     <DropPlace handleDrop={handleDrop} />
