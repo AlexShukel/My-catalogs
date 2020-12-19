@@ -20,7 +20,6 @@ import css from "./Buttons.module.css";
 import NewPhotoForm from "../forms/NewPhotoForm";
 
 const POPPER_TRANSITION = 200;
-const FOLDER_ICON_PATH = "FOLDER_ICON";
 
 const defaultI18n = {
     new: "New...",
@@ -64,7 +63,7 @@ const FolderAddButton = ({ path, namedPath }: Props) => {
             const iconPath = file
                 ? await saveFile(
                       file,
-                      `catalogs/${namedPath}/${name}/${FOLDER_ICON_PATH}`
+                      `catalogs/${namedPath}/${name}/${file.name}`
                   )
                 : "";
             if (createdFolder) {
