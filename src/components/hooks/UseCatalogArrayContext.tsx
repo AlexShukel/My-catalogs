@@ -6,6 +6,7 @@ import { CatalogContext } from "../catalog-context/CatalogContext";
 export interface ArrayController<T> {
     add: (value: T) => void;
     remove: (index: number) => void;
+    modify: (value: T, index: number) => void;
     array: T[];
 }
 
@@ -36,9 +37,18 @@ export const useCatalogArrayContext = <T,>(
         [array, setContext]
     );
 
+    const modify = React.useCallback(
+        (value: T, index) => {
+            array[index] = value;
+            setContext();
+        },
+        [array, setContext]
+    );
+
     return {
         array,
         add,
         remove,
+        modify,
     };
 };

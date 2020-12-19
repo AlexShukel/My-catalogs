@@ -1,0 +1,10 @@
+.list-item {
+    width: 260px;
+    height: 195px;
+}
+
+.list-item__delete {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+}

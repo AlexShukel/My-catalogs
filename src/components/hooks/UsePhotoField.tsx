@@ -1,22 +1,22 @@
 import { useCallback } from "react";
 
-const usePhotoField = (catalogCoverUploader: (file: File) => void) => {
+const usePhotoField = (photoUploader: (file: File) => void) => {
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             if (e.target.files && e.target.files.length > 0) {
-                catalogCoverUploader(e.target.files[0]);
+                photoUploader(e.target.files[0]);
             }
         },
-        [catalogCoverUploader]
+        [photoUploader]
     );
 
     const handleDrop = useCallback(
         (e: React.DragEvent) => {
             if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                catalogCoverUploader(e.dataTransfer.files[0]);
+                photoUploader(e.dataTransfer.files[0]);
             }
         },
-        [catalogCoverUploader]
+        [photoUploader]
     );
 
     return { handleDrop, handleChange };

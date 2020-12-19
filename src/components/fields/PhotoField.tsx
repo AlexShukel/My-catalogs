@@ -41,7 +41,6 @@ const PhotoField = ({
     const inputRef = useRef<HTMLInputElement>(null);
     const i18n = useI18n(defaultI18n, "photoField");
     const [showButtons, setShowButtons] = useState(false);
-
     return (
         <div
             style={{ height, width }}

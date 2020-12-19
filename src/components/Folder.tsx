@@ -37,7 +37,11 @@ const Folder = ({ path }: Props) => {
                 isEditing={isEditing}
             />
 
-            <PhotosList path={path} />
+            <PhotosList
+                path={path}
+                namedPath={namedPath}
+                isEditing={isEditing}
+            />
 
             {/* BUTTONS */}
             <FolderAddButton path={path} namedPath={namedPath} />

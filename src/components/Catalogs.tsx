@@ -38,6 +38,7 @@ const Catalogs = () => {
         [context, array]
     );
 
+    // FIXME Нельзя назвать папку с пробелами
     const createNewCatalog = useCallback(
         async (file: File | null, catalogName: string) => {
             const createdFolder = await createFolder(`catalogs/${catalogName}`);
