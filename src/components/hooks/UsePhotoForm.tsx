@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import usePhotoField from "./UsePhotoField";
 
-const useFolderForm = (
+const usePhotoForm = (
     onSubmit: (file: File | null, name: string) => void,
     closeForm: () => void
 ) => {
@@ -60,4 +60,4 @@ const useFolderForm = (
     };
 };
 
-export default useFolderForm;
+export default usePhotoForm;

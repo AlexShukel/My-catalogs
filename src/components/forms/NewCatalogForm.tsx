@@ -16,7 +16,7 @@ import Draggable from "react-draggable";
 
 import { useI18n } from "../i18n/I18nContext";
 import PhotoField from "../fields/PhotoField";
-import useFolderForm from "../hooks/UseFolderForm";
+import usePhotoForm from "../hooks/UsePhotoForm";
 
 import css from "./Forms.module.css";
 
@@ -59,7 +59,7 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
         name,
         submitForm,
         uploadPhoto,
-    } = useFolderForm(onSubmit, () => setFormOpened(false));
+    } = usePhotoForm(onSubmit, () => setFormOpened(false));
 
     const openForm = useCallback(() => {
         setFormOpened(true);

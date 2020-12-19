@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 
 import { useI18n } from "../i18n/I18nContext";
-import useFolderForm from "../hooks/UseFolderForm";
+import usePhotoForm from "../hooks/UsePhotoForm";
 import PhotoField from "../fields/PhotoField";
 import { PaperComponent } from "./NewCatalogForm";
 
@@ -44,7 +44,7 @@ const NewFolderForm = ({ onSubmit }: Props) => {
         setName,
         submitForm,
         uploadPhoto,
-    } = useFolderForm(onSubmit, () => setFormOpened(false));
+    } = usePhotoForm(onSubmit, () => setFormOpened(false));
 
     const openForm = useCallback(() => {
         setFormOpened(true);
