@@ -31,7 +31,11 @@ const Folder = ({ path }: Props) => {
         <div>
             <Head title={namedPath} />
 
-            <FoldersList path={path} isEditing={isEditing} />
+            <FoldersList
+                path={path}
+                namedPath={namedPath}
+                isEditing={isEditing}
+            />
 
             <PhotosList path={path} />
 
