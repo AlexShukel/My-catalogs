@@ -6,6 +6,7 @@ import { Route, Router } from "./components/router/Router";
 import { I18nContext } from "./components/i18n/I18nContext";
 import Catalogs from "./components/Catalogs";
 import { CatalogController } from "./components/catalog-context/CatalogContext";
+import Folder from "./components/Folder";
 
 import "./styles.css";
 
@@ -48,9 +49,9 @@ const App = () => {
                 <CatalogController>
                     <Router initialPage="catalogs">
                         <Route location="catalogs">{() => <Catalogs />}</Route>
-                        {/* <Route location="folder">
+                        <Route location="folder">
                             {(params) => <Folder path={params.path} />}
-                        </Route> */}
+                        </Route>
                     </Router>
                 </CatalogController>
             </I18nContext.Provider>

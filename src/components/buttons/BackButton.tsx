@@ -14,7 +14,7 @@ const BackButton = () => {
     return page !== "catalogs" ? (
         <Tooltip title={i18n.back}>
             <Box className="button-margin">
-                <IconButton color="secondary" onClick={back}>
+                <IconButton onClick={back}>
                     <Icon fontSize="large">arrow_back</Icon>
                 </IconButton>
             </Box>
