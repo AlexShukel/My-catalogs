@@ -56,14 +56,17 @@ const reactConfig = (env, args) => {
             }),
             new MiniCssExtractPlugin(),
             isProduction
-                ? new CleanWebpackPlugin({
-                      cleanOnceBeforeBuildPatterns: [
-                          path.join(__dirname, "dist", "renderer", "**"),
-                      ],
-                  })
+                ? new CleanWebpackPlugin()
                 : new webpack.HotModuleReplacementPlugin(),
         ],
     };
 };
 
 module.exports = reactConfig;
+
+// This were in CleanWebpackPlugin
+// {
+//     cleanOnceBeforeBuildPatterns: [
+//         path.join(__dirname, "dist", "renderer", "**"),
+//     ],
+// }

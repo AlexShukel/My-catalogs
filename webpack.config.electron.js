@@ -1,5 +1,4 @@
 const path = require("path");
-const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const electronConfig = (env, args) => {
@@ -28,16 +27,15 @@ const electronConfig = (env, args) => {
                 },
             ],
         },
-        plugins: [
-            isProduction
-                ? new CleanWebpackPlugin({
-                      cleanOnceBeforeBuildPatterns: [
-                          path.join(__dirname, "dist", "main", "**"),
-                      ],
-                  })
-                : new webpack.HotModuleReplacementPlugin(),
-        ],
+        plugins: [new CleanWebpackPlugin()],
     };
 };
 
 module.exports = electronConfig;
+
+// This were in CleanWebpackPlugin
+// {
+//     cleanOnceBeforeBuildPatterns: [
+//         path.join(__dirname, "dist", "main", "**"),
+//     ],
+// }
