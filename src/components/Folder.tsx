@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { get } from "lodash";
+import { Box } from "@material-ui/core";
 
 import EditButton from "./buttons/EditButton";
 import FolderAddButton from "./buttons/FolderAddButton";
@@ -45,7 +46,12 @@ const Folder = ({ path }: Props) => {
 
             {/* BUTTONS */}
             <FolderAddButton path={path} namedPath={namedPath} />
-            <EditButton isEditing={isEditing} toggleEditing={toggleEditing} />
+            <Box className="edit-btn">
+                <EditButton
+                    isEditing={isEditing}
+                    toggleEditing={toggleEditing}
+                />
+            </Box>
         </div>
     );
 };

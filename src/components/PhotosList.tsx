@@ -80,6 +80,7 @@ const PhotosList = ({ path, namedPath, isEditing }: Props) => {
                         closeSlider={closeSlider}
                         photos={photos}
                         initialIndex={initialIndex}
+                        folderPath={path}
                     />
                 </Backdrop>
             )}

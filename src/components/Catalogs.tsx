@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { List } from "@material-ui/core";
+import { Box, List } from "@material-ui/core";
 import { set } from "lodash";
 
 import Head from "./Head";
@@ -30,15 +30,11 @@ const Catalogs = () => {
     const updateCoverPath = useCallback(
         (index: number, newPath: string) =>
             context.setValues(
-                set(context, `catalogs.${index}`, {
-                    ...array[index],
-                    coverPath: newPath,
-                })
+                set(context, `catalogs.${index}.coverPath`, newPath)
             ),
-        [context, array]
+        [context]
     );
 
-    // FIXME Нельзя назвать папку с пробелами
     const createNewCatalog = useCallback(
         async (file: File | null, catalogName: string) => {
             const createdFolder = await createFolder(`catalogs/${catalogName}`);
@@ -85,7 +81,12 @@ const Catalogs = () => {
             </List>
 
             {/* Buttons */}
-            <EditButton isEditing={isEditing} toggleEditing={toggleEditing} />
+            <Box className="edit-btn">
+                <EditButton
+                    isEditing={isEditing}
+                    toggleEditing={toggleEditing}
+                />
+            </Box>
 
             {/* POPUPS */}
             <NewCatalogForm onSubmit={createNewCatalog} />

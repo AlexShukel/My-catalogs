@@ -18,3 +18,10 @@ body {
 .button-margin {
     margin: 10px;
 }
+
+.edit-btn {
+    position: fixed;
+    margin: 30px;
+    bottom: 0;
+    right: 0;
+}

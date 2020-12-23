@@ -14,3 +14,8 @@
 .img {
     margin: 10px;
 }
+
+.accordion-details {
+    justify-content: space-between;
+    align-items: center;
+}
