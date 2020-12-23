@@ -53,7 +53,9 @@ const PhotoField = ({
                     onMouseOver={() => img && setShowButtons(true)}
                     onMouseLeave={() => setShowButtons(false)}
                     style={{
-                        backgroundImage: `url(${img.replace(/\\/g, "/")})`,
+                        backgroundImage: `url(${encodeURI(
+                            img.replace(/\\/g, "/")
+                        )})`,
                     }}
                     className={css["image"]}
                 >
