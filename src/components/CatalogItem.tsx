@@ -5,7 +5,6 @@ import {
     ListItemText,
     Typography,
     Box,
-    IconButton,
     Icon,
     useTheme,
 } from "@material-ui/core";
@@ -17,6 +16,7 @@ import { deleteFile, saveFile } from "../utils/electronUtils";
 
 import css from "./CatalogItem.module.css";
 import usePhotoField from "./hooks/UsePhotoField";
+import { StyledIconButton } from "../App";
 
 interface Props {
     catalog: Catalog;
@@ -87,14 +87,14 @@ const CatalogItem = ({
                         </ListItemText>
                         {isEditing && (
                             <Box className={css["item__delete"]}>
-                                <IconButton
+                                <StyledIconButton
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         remove(index);
                                     }}
                                 >
                                     <Icon>delete</Icon>
-                                </IconButton>
+                                </StyledIconButton>
                             </Box>
                         )}
                     </Paper>

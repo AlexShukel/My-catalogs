@@ -1,10 +1,11 @@
 import React, { useCallback } from "react";
-import { Box, Icon, IconButton, ListItem } from "@material-ui/core";
+import { Box, Icon, ListItem } from "@material-ui/core";
 
 import { Photo } from "../objects/Photo";
 import PhotoField from "./fields/PhotoField";
 import { deleteFile, saveFile } from "../utils/electronUtils";
 import usePhotoField from "./hooks/UsePhotoField";
+import { StyledIconButton } from "../App";
 
 import css from "./PhotoItem.module.css";
 
@@ -59,14 +60,14 @@ const PhotoItem = ({
             />
             {isEditing && (
                 <Box className={css["list-item__delete"]}>
-                    <IconButton
+                    <StyledIconButton
                         onClick={(e) => {
                             e.stopPropagation();
                             remove(index);
                         }}
                     >
                         <Icon>delete</Icon>
-                    </IconButton>
+                    </StyledIconButton>
                 </Box>
             )}
         </ListItem>

@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeProvider } from "@material-ui/core";
+import { IconButton, ThemeProvider, withStyles } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 import { Route, Router } from "./components/router/Router";
@@ -10,20 +10,21 @@ import Folder from "./components/Folder";
 
 import "./styles.css";
 
+export const StyledIconButton = withStyles({
+    root: {
+        color: "#fff",
+        backgroundColor: "#2196f3",
+        "&:hover": {
+            backgroundColor: "#0266f2",
+        },
+    },
+})(IconButton);
+
 const theme = createMuiTheme({
     overrides: {
         MuiListItem: {
             root: {
                 width: undefined,
-            },
-        },
-        MuiIconButton: {
-            root: {
-                color: "#fff",
-                backgroundColor: "#2196f3",
-                "&:hover": {
-                    backgroundColor: "#0266f2",
-                },
             },
         },
         MuiDialogContent: {

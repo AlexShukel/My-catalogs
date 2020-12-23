@@ -1,6 +1,8 @@
-import { ButtonBase, Icon, IconButton, Typography } from "@material-ui/core";
-import classNames from "classnames";
 import React, { useRef, useState } from "react";
+import { ButtonBase, Icon, Typography } from "@material-ui/core";
+import classNames from "classnames";
+
+import { StyledIconButton } from "../../App";
 import DropPlace from "../containers/DropPlace";
 import { useI18n } from "../i18n/I18nContext";
 
@@ -58,25 +60,25 @@ const PhotoField = ({
                     {showButtons && (
                         <React.Fragment>
                             {editable && (
-                                <IconButton
+                                <StyledIconButton
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         handleDelete();
                                     }}
                                 >
                                     <Icon>delete</Icon>
-                                </IconButton>
+                                </StyledIconButton>
                             )}
 
                             {handleFullscreen && (
-                                <IconButton
+                                <StyledIconButton
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         handleFullscreen();
                                     }}
                                 >
                                     <Icon>fullscreen</Icon>
-                                </IconButton>
+                                </StyledIconButton>
                             )}
                         </React.Fragment>
                     )}

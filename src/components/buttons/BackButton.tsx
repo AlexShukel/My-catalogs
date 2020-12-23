@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, Icon, IconButton, Tooltip } from "@material-ui/core";
+import { Box, Icon, Tooltip } from "@material-ui/core";
 
 import { RouterContext } from "../router/Router";
 import { useI18n } from "../i18n/I18nContext";
+import { StyledIconButton } from "../../App";
 
 const defaultI18n = {
     back: "Back",
@@ -14,9 +15,9 @@ const BackButton = () => {
     return page !== "catalogs" ? (
         <Tooltip title={i18n.back}>
             <Box className="button-margin">
-                <IconButton onClick={back}>
+                <StyledIconButton onClick={back}>
                     <Icon>arrow_back</Icon>
-                </IconButton>
+                </StyledIconButton>
             </Box>
         </Tooltip>
     ) : null;
