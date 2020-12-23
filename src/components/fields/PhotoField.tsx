@@ -48,7 +48,7 @@ const PhotoField = ({
         >
             {img ? (
                 <div
-                    onMouseOver={() => editable && img && setShowButtons(true)}
+                    onMouseOver={() => img && setShowButtons(true)}
                     onMouseLeave={() => setShowButtons(false)}
                     style={{
                         backgroundImage: `url(${img.replace(/\\/g, "/")})`,
@@ -57,14 +57,17 @@ const PhotoField = ({
                 >
                     {showButtons && (
                         <React.Fragment>
-                            <IconButton
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDelete();
-                                }}
-                            >
-                                <Icon>delete</Icon>
-                            </IconButton>
+                            {editable && (
+                                <IconButton
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDelete();
+                                    }}
+                                >
+                                    <Icon>delete</Icon>
+                                </IconButton>
+                            )}
+
                             {handleFullscreen && (
                                 <IconButton
                                     onClick={(e) => {
@@ -72,7 +75,7 @@ const PhotoField = ({
                                         handleFullscreen();
                                     }}
                                 >
-                                    <Icon>delete</Icon>
+                                    <Icon>fullscreen</Icon>
                                 </IconButton>
                             )}
                         </React.Fragment>

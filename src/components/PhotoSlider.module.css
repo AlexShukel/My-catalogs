@@ -1,0 +1,12 @@
+.slider {
+    background-color: #fff;
+}
+
+.slider__container {
+    display: flex;
+    align-items: center;
+}
+
+.slider__description {
+    width: 696px;
+}

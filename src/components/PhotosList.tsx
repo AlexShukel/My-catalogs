@@ -1,11 +1,12 @@
-import React, { useCallback } from "react";
-import { List } from "@material-ui/core";
+import React, { useCallback, useState } from "react";
+import { Backdrop, List } from "@material-ui/core";
 
 import { Photo } from "../objects/Photo";
 import { useCatalogArrayContext } from "./hooks/UseCatalogArrayContext";
-
 import PhotoItem from "./PhotoItem";
 import { deleteFile } from "../utils/electronUtils";
+import PhotoSlider from "./PhotoSlider";
+
 interface Props {
     path: string;
     namedPath: string;
@@ -15,6 +16,25 @@ interface Props {
 const PhotosList = ({ path, namedPath, isEditing }: Props) => {
     const { array: photos, modify, remove } = useCatalogArrayContext<Photo>(
         `${path}.photos`
+    );
+
+    const [{ open: sliderOpened, initialIndex }, setOpenSlider] = useState({
+        open: false,
+        initialIndex: 0,
+    });
+
+    const closeSlider = useCallback(
+        () =>
+            setOpenSlider({
+                open: false,
+                initialIndex,
+            }),
+        [initialIndex]
+    );
+
+    const openSlider = useCallback(
+        (index: number) => setOpenSlider({ initialIndex: index, open: true }),
+        []
     );
 
     const updatePhotoPath = useCallback(
@@ -38,19 +58,32 @@ const PhotosList = ({ path, namedPath, isEditing }: Props) => {
     );
 
     return photos.length > 0 ? (
-        <List className="list">
-            {photos.map((photo, index) => (
-                <PhotoItem
-                    key={photo.id}
-                    photo={photo}
-                    index={index}
-                    isEditing={isEditing}
-                    namedPath={namedPath}
-                    updatePhotoPath={updatePhotoPath}
-                    remove={deletePhoto}
-                />
-            ))}
-        </List>
+        <React.Fragment>
+            <List className="list">
+                {photos.map((photo, index) => (
+                    <PhotoItem
+                        key={photo.id}
+                        photo={photo}
+                        index={index}
+                        isEditing={isEditing}
+                        namedPath={namedPath}
+                        updatePhotoPath={updatePhotoPath}
+                        remove={deletePhoto}
+                        handleFullscreen={openSlider}
+                    />
+                ))}
+            </List>
+            {/* SLIDER */}
+            {sliderOpened && (
+                <Backdrop style={{ zIndex: 10 }} open={sliderOpened}>
+                    <PhotoSlider
+                        closeSlider={closeSlider}
+                        photos={photos}
+                        initialIndex={initialIndex}
+                    />
+                </Backdrop>
+            )}
+        </React.Fragment>
     ) : null;
 };
 

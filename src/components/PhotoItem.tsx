@@ -13,6 +13,7 @@ interface Props {
     photo: Photo;
     isEditing: boolean;
     updatePhotoPath: (index: number, newPath: string) => void;
+    handleFullscreen: (index: number) => void;
     remove: (index: number) => void;
     namedPath: string;
 }
@@ -24,6 +25,7 @@ const PhotoItem = ({
     updatePhotoPath,
     remove,
     namedPath,
+    handleFullscreen,
 }: Props) => {
     const photoUploader = useCallback(
         async (file: File) => {
@@ -53,7 +55,7 @@ const PhotoItem = ({
                 handleDrop={handleDrop}
                 editable={isEditing}
                 handleDelete={handleDelete}
-                // TODO add PhotoSlider
+                handleFullscreen={() => handleFullscreen(index)}
             />
             {isEditing && (
                 <Box className={css["list-item__delete"]}>
