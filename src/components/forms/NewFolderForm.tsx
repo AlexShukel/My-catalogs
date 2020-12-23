@@ -44,6 +44,8 @@ const NewFolderForm = ({ onSubmit }: Props) => {
         setName,
         submitForm,
         uploadPhoto,
+        error,
+        setError,
     } = usePhotoForm(onSubmit, () => setFormOpened(false));
 
     const openForm = useCallback(() => {
@@ -55,7 +57,8 @@ const NewFolderForm = ({ onSubmit }: Props) => {
         setFormOpened(false);
         setName("");
         setImg("");
-    }, [setImg, setName]);
+        setError("");
+    }, [setImg, setName, setError]);
 
     return (
         <React.Fragment>
@@ -82,6 +85,8 @@ const NewFolderForm = ({ onSubmit }: Props) => {
                         onChange={handleChange}
                         onKeyPress={handleKeyPress}
                         inputRef={inputRef}
+                        error={!!error}
+                        helperText={error}
                     />
 
                     <div className={css["folder-icon"]}>

@@ -56,7 +56,7 @@ const storagePath = path.resolve(
 );
 const JSON_FILE = "data.json";
 
-// FIXME always creates new directory
+// FIXME always creates new directory in dev
 if (!fs.existsSync(storagePath)) {
     fs.mkdirSync(storagePath, {
         recursive: true,

@@ -59,6 +59,8 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
         name,
         submitForm,
         uploadPhoto,
+        error,
+        setError,
     } = usePhotoForm(onSubmit, () => setFormOpened(false));
 
     const openForm = useCallback(() => {
@@ -70,7 +72,8 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
         setFormOpened(false);
         setName("");
         setImg("");
-    }, [setImg, setName]);
+        setError("");
+    }, [setImg, setName, setError]);
 
     return (
         <React.Fragment>
@@ -104,6 +107,8 @@ const NewCatalogForm = ({ onSubmit }: Props) => {
                         onChange={handleChange}
                         onKeyPress={handleKeyPress}
                         inputRef={inputRef}
+                        error={!!error}
+                        helperText={error}
                     />
                     <PhotoField
                         handleChange={uploadPhoto}

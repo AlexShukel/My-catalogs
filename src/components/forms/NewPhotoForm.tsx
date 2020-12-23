@@ -42,7 +42,7 @@ const NewPhotoForm = ({ onSubmit }: Props) => {
         setName: setDescription,
         submitForm,
         uploadPhoto,
-    } = usePhotoForm(onSubmit, () => setFormOpened(false));
+    } = usePhotoForm(onSubmit, () => setFormOpened(false), false);
 
     const openForm = useCallback(() => {
         setFormOpened(true);

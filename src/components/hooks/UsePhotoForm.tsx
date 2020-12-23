@@ -1,14 +1,22 @@
 import React, { useCallback, useRef, useState } from "react";
+import { useI18n } from "../i18n/I18nContext";
 import usePhotoField from "./UsePhotoField";
+
+const defaultI18n = {
+    required: "Required",
+};
 
 const usePhotoForm = (
     onSubmit: (file: File | null, name: string) => void,
-    closeForm: () => void
+    closeForm: () => void,
+    required = true
 ) => {
+    const i18n = useI18n(defaultI18n, "usePhotoForm");
     const inputRef = React.useRef<HTMLInputElement>();
     const selectedFile = useRef<File | null>(null);
 
     const [name, setName] = useState("");
+    const [error, setError] = useState("");
     const [img, setImg] = useState("");
 
     const { handleDrop, handleChange: uploadPhoto } = usePhotoField(
@@ -25,12 +33,14 @@ const usePhotoForm = (
     }, []);
 
     const submitForm = useCallback(() => {
-        onSubmit(selectedFile.current, name);
-        setName("");
-        setImg("");
-        closeForm();
-        selectedFile.current = null;
-    }, [name, closeForm, onSubmit]);
+        if (name || !required) {
+            onSubmit(selectedFile.current, name);
+            setName("");
+            setImg("");
+            closeForm();
+            selectedFile.current = null;
+        } else setError(i18n.required);
+    }, [name, closeForm, onSubmit, required, i18n.required]);
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
@@ -57,6 +67,8 @@ const usePhotoForm = (
         handleKeyPress,
         name,
         setName,
+        error,
+        setError,
     };
 };
 
