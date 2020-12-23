@@ -56,7 +56,12 @@ const PhotoSlider = ({ closeSlider, initialIndex, photos }: Props) => {
                 >
                     <Icon>arrow_back</Icon>
                 </IconButton>
-                <img src={photos[index].photo} width={600} height={400} />
+                <img
+                    src={photos[index].photo}
+                    width={600}
+                    height={400}
+                    className={css["img"]}
+                />
                 <IconButton
                     onClick={nextPhoto}
                     disabled={index === photos.length - 1}
