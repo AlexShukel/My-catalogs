@@ -7,6 +7,7 @@ import { I18nContext } from "./components/i18n/I18nContext";
 import Catalogs from "./components/Catalogs";
 import { CatalogController } from "./components/catalog-context/CatalogContext";
 import Folder from "./components/Folder";
+import SettingsPage from "./components/SettingsPage";
 
 import "./styles.css";
 
@@ -57,6 +58,9 @@ const App = () => {
                         <Route location="catalogs">{() => <Catalogs />}</Route>
                         <Route location="folder">
                             {(params) => <Folder path={params.path} />}
+                        </Route>
+                        <Route location="settings">
+                            {() => <SettingsPage />}
                         </Route>
                     </Router>
                 </CatalogController>

@@ -4,7 +4,7 @@ import rimraf from "rimraf";
 import path from "path";
 import fs from "fs";
 import util from "util";
-import { AppData } from "./objects/AppData";
+import { AppData, Language } from "./objects/AppData";
 
 const writeFile = util.promisify(fs.writeFile);
 const removeDir = util.promisify(fs.rmdir);
@@ -74,6 +74,7 @@ ipcMain.handle("GET_DATA", () => {
     } else {
         const emptyData: AppData = {
             catalogs: [],
+            language: Language.EN,
         };
         const stringifiedEmptyData = JSON.stringify(emptyData).toString();
         fs.writeFileSync(dataPath, stringifiedEmptyData);

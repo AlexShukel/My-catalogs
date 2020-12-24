@@ -1,8 +1,10 @@
 import React from "react";
 import classNames from "classnames";
-import { Paper, Typography, useTheme } from "@material-ui/core";
+import { Box, Icon, Paper, Typography, useTheme } from "@material-ui/core";
 
 import BackButton from "./buttons/BackButton";
+import { StyledIconButton } from "../App";
+import { Link } from "./router/Router";
 
 import css from "./Head.module.css";
 
@@ -21,12 +23,23 @@ const Head = ({ title, className }: Props) => {
         <Paper
             style={{ backgroundColor: primaryMain }}
             square
-            className={classNames(className, css["head"])}
+            className={css["head"]}
         >
-            <BackButton />
-            <Typography variant="h3" className={css["head__title"]}>
-                {title}
-            </Typography>
+            <div className={classNames(className, css["head__left"])}>
+                <BackButton />
+                <Typography variant="h3" className={css["head__title"]}>
+                    {title}
+                </Typography>
+            </div>
+            <Box className="button-margin">
+                <Link href="settings">
+                    {(onClick) => (
+                        <StyledIconButton onClick={onClick}>
+                            <Icon>settings</Icon>
+                        </StyledIconButton>
+                    )}
+                </Link>
+            </Box>
         </Paper>
     );
 };

@@ -1,7 +1,8 @@
 .head {
     display: flex;
     align-items: center;
-    padding: 20px;
+    justify-content: space-between;
+    padding: 20px 0;
     height: 72px;
     width: 100%;
 }
@@ -11,4 +12,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.head__left {
+    display: flex;
+    align-items: center;
 }

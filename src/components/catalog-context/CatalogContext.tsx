@@ -1,5 +1,5 @@
 import React from "react";
-import { AppData } from "../../objects/AppData";
+import { AppData, Language } from "../../objects/AppData";
 import { ipcRenderer } from "electron";
 
 export const CatalogContext = React.createContext(
@@ -32,7 +32,11 @@ export const CatalogController = ({ children }: ControllerProps) => {
 
     return (
         <CatalogContext.Provider
-            value={{ catalogs: state?.catalogs ?? [], setValues }}
+            value={{
+                catalogs: state?.catalogs ?? [],
+                language: state?.language ?? Language.EN,
+                setValues,
+            }}
         >
             {children}
         </CatalogContext.Provider>
