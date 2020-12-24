@@ -1,9 +1,5 @@
 import { Catalog } from "./Catalog";
-
-export enum Language {
-    EN = "EN",
-    RU = "RU",
-}
+import { Language } from "./Language";
 
 export interface AppData {
     catalogs: Catalog[];

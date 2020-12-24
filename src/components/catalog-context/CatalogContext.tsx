@@ -1,6 +1,7 @@
 import React from "react";
-import { AppData, Language } from "../../objects/AppData";
+import { AppData } from "../../objects/AppData";
 import { ipcRenderer } from "electron";
+import { Language } from "../../objects/Language";
 
 export const CatalogContext = React.createContext(
     {} as AppData & { setValues: (values: AppData) => void }

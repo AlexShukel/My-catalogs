@@ -4,7 +4,8 @@ import rimraf from "rimraf";
 import path from "path";
 import fs from "fs";
 import util from "util";
-import { AppData, Language } from "./objects/AppData";
+import { AppData } from "./objects/AppData";
+import { Language } from "./objects/Language";
 
 const writeFile = util.promisify(fs.writeFile);
 const removeDir = util.promisify(fs.rmdir);
