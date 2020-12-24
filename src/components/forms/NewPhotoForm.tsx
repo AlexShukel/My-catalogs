@@ -79,6 +79,7 @@ const NewPhotoForm = ({ onSubmit }: Props) => {
                         value={description}
                         onChange={handleDescriptionChange}
                         multiline
+                        inputRef={inputRef}
                     />
 
                     <PhotoField

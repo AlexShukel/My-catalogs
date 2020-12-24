@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, TextField, TextFieldProps, Typography } from "@material-ui/core";
 
 import { useI18n } from "./i18n/I18nContext";
@@ -17,13 +17,20 @@ type Props = Omit<TextFieldProps, "onSubmit"> & {
 const EditableText = ({ initialText, onSubmit, ...other }: Props) => {
     const i18n = useI18n(defaultI18n, "EditableText");
 
-    const [text, setText] = useState(initialText);
-    const { isEditing, toggleEditing } = useEditMode(() => onSubmit(text));
+    const [text, setText] = useState("");
+    const { isEditing, setIsEditing, toggleEditing } = useEditMode(() =>
+        onSubmit(text)
+    );
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => setText(e.target.value),
         []
     );
+
+    useEffect(() => {
+        setText(initialText);
+        setIsEditing(false);
+    }, [initialText, setIsEditing]);
 
     return (
         <React.Fragment>

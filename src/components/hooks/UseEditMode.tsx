@@ -12,7 +12,7 @@ function useEditMode(onSwitchToReadonly?: () => void) {
         [onSwitchToReadonly]
     );
 
-    return { isEditing, toggleEditing };
+    return { isEditing, setIsEditing, toggleEditing };
 }
 
 export default useEditMode;
