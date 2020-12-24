@@ -29,7 +29,7 @@ interface Props {
 
 const NewPhotoForm = ({ onSubmit }: Props) => {
     const [formOpened, setFormOpened] = useState(false);
-    const i18n = useI18n(defaultI18n, "NewFolderForm");
+    const i18n = useI18n(defaultI18n, "NewPhotoForm");
 
     const {
         handleChange: handleDescriptionChange,

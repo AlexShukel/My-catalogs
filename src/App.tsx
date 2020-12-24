@@ -5,9 +5,13 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import { Route, Router } from "./components/router/Router";
 import { I18nContext } from "./components/i18n/I18nContext";
 import Catalogs from "./components/Catalogs";
-import { CatalogController } from "./components/catalog-context/CatalogContext";
+import {
+    CatalogContext,
+    CatalogController,
+} from "./components/catalog-context/CatalogContext";
 import Folder from "./components/Folder";
 import SettingsPage from "./components/SettingsPage";
+import { translations } from "./Translations/Translations";
 
 import "./styles.css";
 
@@ -52,19 +56,25 @@ const App = () => {
     return (
         <ThemeProvider theme={theme}>
             {/* TODO create I18n */}
-            <I18nContext.Provider value={{}}>
-                <CatalogController>
-                    <Router initialPage="catalogs">
-                        <Route location="catalogs">{() => <Catalogs />}</Route>
-                        <Route location="folder">
-                            {(params) => <Folder path={params.path} />}
-                        </Route>
-                        <Route location="settings">
-                            {() => <SettingsPage />}
-                        </Route>
-                    </Router>
-                </CatalogController>
-            </I18nContext.Provider>
+            <CatalogController>
+                <CatalogContext.Consumer>
+                    {({ language }) => (
+                        <I18nContext.Provider value={translations[language]}>
+                            <Router initialPage="catalogs">
+                                <Route location="catalogs">
+                                    {() => <Catalogs />}
+                                </Route>
+                                <Route location="folder">
+                                    {(params) => <Folder path={params.path} />}
+                                </Route>
+                                <Route location="settings">
+                                    {() => <SettingsPage />}
+                                </Route>
+                            </Router>
+                        </I18nContext.Provider>
+                    )}
+                </CatalogContext.Consumer>
+            </CatalogController>
         </ThemeProvider>
     );
 };

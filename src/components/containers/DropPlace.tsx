@@ -59,7 +59,7 @@ const DropPlace = ({ handleDrop, children, className }: Props) => {
     const documentEnterTarget = React.useRef<EventTarget | null>(null);
     const zoneEnterTarget = React.useRef<EventTarget | null>(null);
 
-    const { dropPlaceLabel } = useI18n(defaultI18n, "dropPlace");
+    const { dropPlaceLabel } = useI18n(defaultI18n, "DropPlace");
 
     const onDrop = React.useCallback(
         (e: React.DragEvent) => {

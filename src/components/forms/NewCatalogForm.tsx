@@ -45,7 +45,7 @@ interface Props {
 const NewCatalogForm = ({ onSubmit }: Props) => {
     const [formOpened, setFormOpened] = useState(false);
 
-    const i18n = useI18n(defaultI18n, "FolderForm");
+    const i18n = useI18n(defaultI18n, "NewCatalogForm");
 
     const {
         setName,

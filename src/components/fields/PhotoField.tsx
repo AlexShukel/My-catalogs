@@ -41,7 +41,7 @@ const PhotoField = ({
     className,
 }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
-    const i18n = useI18n(defaultI18n, "photoField");
+    const i18n = useI18n(defaultI18n, "PhotoField");
     const [showButtons, setShowButtons] = useState(false);
     return (
         <div
