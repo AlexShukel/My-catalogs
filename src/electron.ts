@@ -1,5 +1,5 @@
 import { BrowserWindow, app, ipcMain } from "electron";
-// import isDev from "electron-is-dev";
+import isDev from "electron-is-dev";
 import rimraf from "rimraf";
 import path from "path";
 import fs from "fs";
@@ -46,15 +46,10 @@ app.on("activate", () => {
     }
 });
 
-const storagePath = path.resolve(
-    __dirname,
-    // TODO use this in prod
-    // "..",
-    // "..",
-    // "..",
-    // "..",
-    "PHOTO_STORAGE"
-);
+const storagePath = isDev
+    ? path.resolve(__dirname, "PHOTO_STORAGE")
+    : path.resolve(__dirname, "..", "..", "..", "..", "PHOTO_STORAGE");
+
 const JSON_FILE = "data.json";
 
 // FIXME always creates new directory in dev
