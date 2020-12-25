@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { ButtonBase, Icon, Typography } from "@material-ui/core";
+import { Box, ButtonBase, Icon, Tooltip, Typography } from "@material-ui/core";
 import classNames from "classnames";
 
 import { StyledIconButton } from "../../App";
@@ -60,29 +60,37 @@ const PhotoField = ({
                     className={css["image"]}
                 >
                     {showButtons && (
-                        <React.Fragment>
+                        <div className={css["image__buttons"]}>
                             {editable && (
-                                <StyledIconButton
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleDelete();
-                                    }}
-                                >
-                                    <Icon>delete</Icon>
-                                </StyledIconButton>
+                                <Box className="button-margin">
+                                    <Tooltip title={i18n.removePhoto}>
+                                        <StyledIconButton
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDelete();
+                                            }}
+                                        >
+                                            <Icon>delete</Icon>
+                                        </StyledIconButton>
+                                    </Tooltip>
+                                </Box>
                             )}
 
                             {handleFullscreen && (
-                                <StyledIconButton
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleFullscreen();
-                                    }}
-                                >
-                                    <Icon>fullscreen</Icon>
-                                </StyledIconButton>
+                                <Box className="button-margin">
+                                    <Tooltip title={i18n.fullscreen}>
+                                        <StyledIconButton
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleFullscreen();
+                                            }}
+                                        >
+                                            <Icon>fullscreen</Icon>
+                                        </StyledIconButton>
+                                    </Tooltip>
+                                </Box>
                             )}
-                        </React.Fragment>
+                        </div>
                     )}
                 </div>
             ) : editable ? (
