@@ -72,6 +72,12 @@ export const translations = {
         FoldersList: {
             confirmationMessage: "Вы уверены, что хотите удалить категорию?",
         },
+        CatalogItem: {
+            removeCatalog: "Удалить каталог",
+        },
+        PhotoItem: {
+            remove: "Удалить",
+        },
     },
     LT: {},
 };

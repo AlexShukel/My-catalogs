@@ -7,16 +7,22 @@ import {
     Box,
     Icon,
     useTheme,
+    Tooltip,
 } from "@material-ui/core";
 
 import { Catalog } from "../objects/Catalog";
 import PhotoField from "./fields/PhotoField";
 import { Link } from "./router/Router";
 import { deleteFile, saveFile } from "../utils/electronUtils";
-
-import css from "./CatalogItem.module.css";
 import usePhotoField from "./hooks/UsePhotoField";
 import { StyledIconButton } from "../App";
+import { useI18n } from "./i18n/I18nContext";
+
+import css from "./CatalogItem.module.css";
+
+const defaultI18n = {
+    removeCatalog: "Remove catalog",
+};
 
 interface Props {
     catalog: Catalog;
@@ -33,6 +39,8 @@ const CatalogItem = ({
     remove,
     updateCoverPath,
 }: Props) => {
+    const i18n = useI18n(defaultI18n, "CatalogItem");
+
     const {
         palette: {
             primary: { main: primaryMain },
@@ -87,14 +95,16 @@ const CatalogItem = ({
                         </ListItemText>
                         {isEditing && (
                             <Box className={css["item__delete"]}>
-                                <StyledIconButton
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        remove(index);
-                                    }}
-                                >
-                                    <Icon>delete</Icon>
-                                </StyledIconButton>
+                                <Tooltip title={i18n.removeCatalog}>
+                                    <StyledIconButton
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            remove(index);
+                                        }}
+                                    >
+                                        <Icon>delete</Icon>
+                                    </StyledIconButton>
+                                </Tooltip>
                             </Box>
                         )}
                     </Paper>

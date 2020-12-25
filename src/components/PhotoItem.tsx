@@ -1,13 +1,18 @@
 import React, { useCallback } from "react";
-import { Box, Icon, ListItem } from "@material-ui/core";
+import { Box, Icon, ListItem, Tooltip } from "@material-ui/core";
 
 import { Photo } from "../objects/Photo";
 import PhotoField from "./fields/PhotoField";
 import { deleteFile, saveFile } from "../utils/electronUtils";
 import usePhotoField from "./hooks/UsePhotoField";
 import { StyledIconButton } from "../App";
+import { useI18n } from "./i18n/I18nContext";
 
 import css from "./PhotoItem.module.css";
+
+const defaultI18n = {
+    remove: "Remove",
+};
 
 interface Props {
     index: number;
@@ -28,6 +33,8 @@ const PhotoItem = ({
     namedPath,
     handleFullscreen,
 }: Props) => {
+    const i18n = useI18n(defaultI18n, "PhotoItem");
+
     const photoUploader = useCallback(
         async (file: File) => {
             const newPath = await saveFile(
@@ -60,14 +67,16 @@ const PhotoItem = ({
             />
             {isEditing && (
                 <Box className={css["list-item__delete"]}>
-                    <StyledIconButton
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            remove(index);
-                        }}
-                    >
-                        <Icon>delete</Icon>
-                    </StyledIconButton>
+                    <Tooltip title={i18n.remove}>
+                        <StyledIconButton
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                remove(index);
+                            }}
+                        >
+                            <Icon>delete</Icon>
+                        </StyledIconButton>
+                    </Tooltip>
                 </Box>
             )}
         </ListItem>
