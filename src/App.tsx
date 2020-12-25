@@ -55,7 +55,6 @@ const theme = createMuiTheme({
 const App = () => {
     return (
         <ThemeProvider theme={theme}>
-            {/* TODO create I18n */}
             <CatalogController>
                 <CatalogContext.Consumer>
                     {({ language }) => (

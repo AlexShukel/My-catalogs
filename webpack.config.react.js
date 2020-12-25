@@ -15,7 +15,6 @@ const reactConfig = (env, args) => {
             filename: isProduction
                 ? "[name].[contenthash].js"
                 : "[name].bundle.js",
-            // FIXME renderer doesn't exists in app.asar
             path: path.resolve(__dirname, "dist", "renderer"),
         },
         resolve: {

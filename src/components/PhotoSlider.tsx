@@ -99,7 +99,6 @@ const PhotoSlider = ({
                     <Typography>{i18n.description}</Typography>
                 </AccordionSummary>
                 <AccordionDetails className={css["accordion-details"]}>
-                    {/* FIXME text doesn't updates after index changes */}
                     <EditableText
                         initialText={photos[index].description}
                         onSubmit={handleSubmit}
