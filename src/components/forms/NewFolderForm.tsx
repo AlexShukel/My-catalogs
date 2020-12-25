@@ -73,7 +73,7 @@ const NewFolderForm = ({ onSubmit }: Props) => {
                 <DialogTitle
                     disableTypography
                     id="draggable-dialog-title"
-                    className={css["draggable"]}
+                    className="draggable"
                 >
                     <Typography variant="h5">{i18n.newCategory}</Typography>
                 </DialogTitle>

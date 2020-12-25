@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useRef, useState } from "react";
 import { Box, List } from "@material-ui/core";
 import { set } from "lodash";
 
@@ -13,12 +13,14 @@ import EditButton from "./buttons/EditButton";
 import { CatalogContext } from "./catalog-context/CatalogContext";
 import CatalogItem from "./CatalogItem";
 import { createFolder, deleteFolder, saveFile } from "../utils/electronUtils";
+import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
 
 import css from "./Catalogs.module.css";
 
 const defaultI18n = {
     catalogs: "Catalogs",
     edit: "Edit",
+    confirmationMessage: "Are you sure you want to delete catalog?",
 };
 
 const Catalogs = () => {
@@ -26,6 +28,12 @@ const Catalogs = () => {
     const context = useContext(CatalogContext);
     const { array, add, remove } = useCatalogArrayContext<Catalog>("catalogs");
     const { isEditing, toggleEditing } = useEditMode();
+
+    const [confirmPopupOpened, setConfirmPopupOpened] = useState(false);
+    const closeConfirmPopup = useCallback(
+        () => setConfirmPopupOpened(false),
+        []
+    );
 
     const updateCoverPath = useCallback(
         (index: number, newPath: string) =>
@@ -54,12 +62,21 @@ const Catalogs = () => {
         [array, add]
     );
 
-    const removeCatalog = useCallback(
+    const removeCatalog = useRef<() => void>(() => {
+        //
+    });
+
+    const handleRemove = useCallback(
         (index: number) => {
-            deleteFolder(`catalogs/${array[index].name}`);
-            remove(index);
+            removeCatalog.current = () => {
+                deleteFolder(`catalogs/${array[index].name}`);
+                remove(index);
+                closeConfirmPopup();
+            };
+
+            setConfirmPopupOpened(true);
         },
-        [array, remove]
+        [array, remove, closeConfirmPopup]
     );
 
     return (
@@ -74,7 +91,7 @@ const Catalogs = () => {
                             catalog={catalog}
                             index={index}
                             isEditing={isEditing}
-                            remove={removeCatalog}
+                            remove={handleRemove}
                             updateCoverPath={updateCoverPath}
                         />
                     ))}
@@ -90,6 +107,12 @@ const Catalogs = () => {
 
             {/* POPUPS */}
             <NewCatalogForm onSubmit={createNewCatalog} />
+            <ConfirmPopup
+                open={confirmPopupOpened}
+                message={i18n.confirmationMessage}
+                handleCancel={closeConfirmPopup}
+                handleConfirm={removeCatalog.current}
+            />
         </div>
     );
 };

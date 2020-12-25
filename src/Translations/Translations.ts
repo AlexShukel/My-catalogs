@@ -4,6 +4,7 @@ export const translations = {
         Catalogs: {
             catalogs: "Каталоги",
             edit: "Редактировать",
+            confirmationMessage: "Вы уверены, что хотите удалить каталог?",
         },
         PhotoField: {
             photoFieldLabel: "Кликни чтобы выбрать фото или сбрось файл сюда",
@@ -62,6 +63,11 @@ export const translations = {
             },
             settings: "Настройки",
             selectLanguage: "Выбрать язык",
+        },
+        ConfirmPopup: {
+            yes: "да",
+            cancel: "отмена",
+            actionConfirmation: "Подтверждение действия",
         },
     },
     LT: {},

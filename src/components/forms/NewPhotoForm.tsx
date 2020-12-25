@@ -68,7 +68,7 @@ const NewPhotoForm = ({ onSubmit }: Props) => {
                 <DialogTitle
                     disableTypography
                     id="draggable-dialog-title"
-                    className={css["draggable"]}
+                    className="draggable"
                 >
                     <Typography variant="h5">{i18n.newPhoto}</Typography>
                 </DialogTitle>
