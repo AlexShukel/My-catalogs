@@ -69,6 +69,9 @@ export const translations = {
             cancel: "отмена",
             actionConfirmation: "Подтверждение действия",
         },
+        FoldersList: {
+            confirmationMessage: "Вы уверены, что хотите удалить категорию?",
+        },
     },
     LT: {},
 };

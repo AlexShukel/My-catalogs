@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useRef, useState } from "react";
+import React, { useCallback, useContext } from "react";
 import { Box, List } from "@material-ui/core";
 import { set } from "lodash";
 
@@ -14,6 +14,7 @@ import { CatalogContext } from "./catalog-context/CatalogContext";
 import CatalogItem from "./CatalogItem";
 import { createFolder, deleteFolder, saveFile } from "../utils/electronUtils";
 import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
+import { useConfirmPopup } from "./hooks/useConfirmPopup";
 
 import css from "./Catalogs.module.css";
 
@@ -28,12 +29,6 @@ const Catalogs = () => {
     const context = useContext(CatalogContext);
     const { array, add, remove } = useCatalogArrayContext<Catalog>("catalogs");
     const { isEditing, toggleEditing } = useEditMode();
-
-    const [confirmPopupOpened, setConfirmPopupOpened] = useState(false);
-    const closeConfirmPopup = useCallback(
-        () => setConfirmPopupOpened(false),
-        []
-    );
 
     const updateCoverPath = useCallback(
         (index: number, newPath: string) =>
@@ -62,13 +57,16 @@ const Catalogs = () => {
         [array, add]
     );
 
-    const removeCatalog = useRef<() => void>(() => {
-        //
-    });
+    const {
+        closeConfirmPopup,
+        confirmPopupOpened,
+        handleConfirm,
+        setConfirmPopupOpened,
+    } = useConfirmPopup();
 
     const handleRemove = useCallback(
         (index: number) => {
-            removeCatalog.current = () => {
+            handleConfirm.current = () => {
                 deleteFolder(`catalogs/${array[index].name}`);
                 remove(index);
                 closeConfirmPopup();
@@ -76,7 +74,7 @@ const Catalogs = () => {
 
             setConfirmPopupOpened(true);
         },
-        [array, remove, closeConfirmPopup]
+        [array, remove, closeConfirmPopup, handleConfirm, setConfirmPopupOpened]
     );
 
     return (
@@ -111,7 +109,7 @@ const Catalogs = () => {
                 open={confirmPopupOpened}
                 message={i18n.confirmationMessage}
                 handleCancel={closeConfirmPopup}
-                handleConfirm={removeCatalog.current}
+                handleConfirm={handleConfirm.current}
             />
         </div>
     );
