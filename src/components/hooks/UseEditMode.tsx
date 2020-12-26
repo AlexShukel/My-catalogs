@@ -1,15 +1,11 @@
 import React from "react";
 
-function useEditMode(onSwitchToReadonly?: () => void) {
+function useEditMode() {
     const [isEditing, setIsEditing] = React.useState(false);
 
     const toggleEditing = React.useCallback(
-        () =>
-            setIsEditing((isEditing) => {
-                if (isEditing && onSwitchToReadonly) onSwitchToReadonly();
-                return !isEditing;
-            }),
-        [onSwitchToReadonly]
+        () => setIsEditing((isEditing) => !isEditing),
+        []
     );
 
     return { isEditing, setIsEditing, toggleEditing };

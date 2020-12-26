@@ -106,6 +106,7 @@ const PhotoSlider = ({
                         fullWidth
                         multiline
                         label={i18n.description}
+                        index={index}
                     />
                 </AccordionDetails>
             </Accordion>
