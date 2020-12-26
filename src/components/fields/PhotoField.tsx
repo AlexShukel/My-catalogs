@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { StyledIconButton } from "../../App";
 import DropPlace from "../containers/DropPlace";
 import { useI18n } from "../i18n/I18nContext";
+import PhotoView from "../containers/PhotoView";
 
 import css from "./PhotoField.module.css";
 
@@ -49,15 +50,10 @@ const PhotoField = ({
             className={classNames(className, css["photo-field"])}
         >
             {img ? (
-                <div
+                <PhotoView
                     onMouseOver={() => img && setShowButtons(true)}
                     onMouseLeave={() => setShowButtons(false)}
-                    style={{
-                        backgroundImage: `url(${encodeURI(
-                            img.replace(/\\/g, "/")
-                        )})`,
-                    }}
-                    className={css["image"]}
+                    path={img}
                 >
                     {showButtons && (
                         <div className={css["image__buttons"]}>
@@ -92,7 +88,7 @@ const PhotoField = ({
                             )}
                         </div>
                     )}
-                </div>
+                </PhotoView>
             ) : editable ? (
                 <React.Fragment>
                     <ButtonBase

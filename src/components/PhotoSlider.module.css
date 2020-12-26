@@ -8,11 +8,12 @@
 }
 
 .slider__description {
-    width: 716px;
+    width: 100%;
 }
 
-.img {
-    margin: 10px;
+.img-container {
+    width: 85vw;
+    height: 70vh;
 }
 
 .accordion-details {
