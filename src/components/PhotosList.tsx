@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Backdrop, List } from "@material-ui/core";
+import { Dialog, DialogContent, List } from "@material-ui/core";
 
 import { Photo } from "../objects/Photo";
 import { useCatalogArrayContext } from "./hooks/UseCatalogArrayContext";
@@ -75,14 +75,20 @@ const PhotosList = ({ path, namedPath, isEditing }: Props) => {
             </List>
             {/* SLIDER */}
             {sliderOpened && (
-                <Backdrop style={{ zIndex: 10 }} open={sliderOpened}>
-                    <PhotoSlider
-                        closeSlider={closeSlider}
-                        photos={photos}
-                        initialIndex={initialIndex}
-                        folderPath={path}
-                    />
-                </Backdrop>
+                <Dialog
+                    open={sliderOpened}
+                    onClose={closeSlider}
+                    maxWidth={false}
+                >
+                    <DialogContent>
+                        <PhotoSlider
+                            closeSlider={closeSlider}
+                            photos={photos}
+                            initialIndex={initialIndex}
+                            folderPath={path}
+                        />
+                    </DialogContent>
+                </Dialog>
             )}
         </React.Fragment>
     ) : null;
