@@ -56,6 +56,7 @@ const NewPhotoForm = ({ handleSubmit }: Props) => {
                         />
                     </React.Fragment>
                 ),
+                required: false,
             }),
         [i18n, handleSubmit, setConfig]
     );

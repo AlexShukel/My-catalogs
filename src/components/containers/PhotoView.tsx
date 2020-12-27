@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import { Icon } from "@material-ui/core";
 
 import css from "./PhotoView.module.css";
 
@@ -13,7 +14,7 @@ interface Props
 }
 
 const PhotoView = ({ path, children, ...other }: Props) => {
-    return (
+    return path ? (
         <div
             {...other}
             className={classNames(other.className, css["image"])}
@@ -24,6 +25,8 @@ const PhotoView = ({ path, children, ...other }: Props) => {
         >
             {children}
         </div>
+    ) : (
+        <Icon fontSize="large">photo_album</Icon>
     );
 };
 

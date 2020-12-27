@@ -49,7 +49,25 @@ const PhotoField = ({
             style={{ height, width }}
             className={classNames(className, css["photo-field"])}
         >
-            {img ? (
+            {editable && !img ? (
+                <React.Fragment>
+                    <ButtonBase
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            inputRef.current?.click();
+                        }}
+                        className={css["photo-field__placeholder-wrapper"]}
+                    >
+                        <div>
+                            <Icon>insert_photo</Icon>
+                            <Typography>
+                                {label ?? i18n.photoFieldLabel}
+                            </Typography>
+                        </div>
+                    </ButtonBase>
+                    <DropPlace handleDrop={handleDrop} />
+                </React.Fragment>
+            ) : (
                 <PhotoView
                     onMouseOver={() => img && setShowButtons(true)}
                     onMouseLeave={() => setShowButtons(false)}
@@ -89,27 +107,8 @@ const PhotoField = ({
                         </div>
                     )}
                 </PhotoView>
-            ) : editable ? (
-                <React.Fragment>
-                    <ButtonBase
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            inputRef.current?.click();
-                        }}
-                        className={css["photo-field__placeholder-wrapper"]}
-                    >
-                        <div>
-                            <Icon>insert_photo</Icon>
-                            <Typography>
-                                {label ?? i18n.photoFieldLabel}
-                            </Typography>
-                        </div>
-                    </ButtonBase>
-                    <DropPlace handleDrop={handleDrop} />
-                </React.Fragment>
-            ) : (
-                <Icon fontSize="large">photo_album</Icon>
             )}
+
             <input
                 style={{ display: "none" }}
                 type="file"
