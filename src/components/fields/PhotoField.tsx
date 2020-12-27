@@ -18,13 +18,16 @@ const defaultI18n = {
 
 interface Props {
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleDrop: (e: React.DragEvent) => void;
     handleDelete: () => void;
+    customDeleteIcon?: React.ReactNode;
     img: string;
     height: number;
     width: number;
     editable: boolean;
+    handleDrop?: (e: React.DragEvent) => void;
     handleFullscreen?: () => void;
+    icon?: string;
+    disableLabel?: boolean;
     label?: string;
     className?: string;
 }
@@ -40,6 +43,9 @@ const PhotoField = ({
     handleFullscreen,
     label,
     className,
+    icon,
+    disableLabel = false,
+    customDeleteIcon,
 }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const i18n = useI18n(defaultI18n, "PhotoField");
@@ -58,37 +64,41 @@ const PhotoField = ({
                         }}
                         className={css["photo-field__placeholder-wrapper"]}
                     >
-                        <div>
-                            <Icon>insert_photo</Icon>
-                            <Typography>
-                                {label ?? i18n.photoFieldLabel}
-                            </Typography>
-                        </div>
+                        {!disableLabel && (
+                            <div>
+                                <Icon>insert_photo</Icon>
+                                <Typography>
+                                    {label ?? i18n.photoFieldLabel}
+                                </Typography>
+                            </div>
+                        )}
                     </ButtonBase>
-                    <DropPlace handleDrop={handleDrop} />
+                    {handleDrop && <DropPlace handleDrop={handleDrop} />}
                 </React.Fragment>
             ) : (
                 <PhotoView
                     onMouseOver={() => img && setShowButtons(true)}
                     onMouseLeave={() => setShowButtons(false)}
                     path={img}
+                    icon={icon}
                 >
                     {showButtons && (
                         <div className={css["image__buttons"]}>
-                            {editable && (
-                                <Box className="button-margin">
-                                    <Tooltip title={i18n.removePhoto}>
-                                        <StyledIconButton
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleDelete();
-                                            }}
-                                        >
-                                            <Icon>delete</Icon>
-                                        </StyledIconButton>
-                                    </Tooltip>
-                                </Box>
-                            )}
+                            {editable &&
+                                (customDeleteIcon || (
+                                    <Box className="button-margin">
+                                        <Tooltip title={i18n.removePhoto}>
+                                            <StyledIconButton
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDelete();
+                                                }}
+                                            >
+                                                <Icon>delete</Icon>
+                                            </StyledIconButton>
+                                        </Tooltip>
+                                    </Box>
+                                ))}
 
                             {handleFullscreen && (
                                 <Box className="button-margin">

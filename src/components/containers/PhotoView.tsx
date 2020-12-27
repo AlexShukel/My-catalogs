@@ -10,10 +10,16 @@ interface Props
         HTMLDivElement
     > {
     path: string;
+    icon?: string;
     children?: React.ReactNode;
 }
 
-const PhotoView = ({ path, children, ...other }: Props) => {
+const PhotoView = ({
+    path,
+    children,
+    icon = "photo_album",
+    ...other
+}: Props) => {
     return path ? (
         <div
             {...other}
@@ -26,7 +32,7 @@ const PhotoView = ({ path, children, ...other }: Props) => {
             {children}
         </div>
     ) : (
-        <Icon fontSize="large">photo_album</Icon>
+        <Icon fontSize="large">{icon}</Icon>
     );
 };
 
