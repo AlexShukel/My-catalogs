@@ -6,16 +6,16 @@ const defaultI18n = {
     required: "Required",
 };
 
-const usePhotoForm = (
-    onSubmit: (file: File | null, name: string) => void,
+const useDialogForm = (
+    onSubmit: (file: File | null, text: string) => void,
     closeForm: () => void,
     required = true
 ) => {
-    const i18n = useI18n(defaultI18n, "usePhotoForm");
+    const i18n = useI18n(defaultI18n, "useDialogForm");
     const inputRef = React.useRef<HTMLInputElement>();
     const selectedFile = useRef<File | null>(null);
 
-    const [name, setName] = useState("");
+    const [text, setText] = useState("");
     const [error, setError] = useState("");
     const [img, setImg] = useState("");
 
@@ -28,24 +28,24 @@ const usePhotoForm = (
     );
 
     const handleDelete = useCallback(() => {
-        setImg("");
         selectedFile.current = null;
+
+        setImg("");
     }, []);
 
     const submitForm = useCallback(() => {
-        if (name || !required) {
-            onSubmit(selectedFile.current, name);
-            setName("");
+        if (text || !required) {
+            onSubmit(selectedFile.current, text);
+            setText("");
             setImg("");
             closeForm();
             selectedFile.current = null;
         } else setError(i18n.required);
-    }, [name, closeForm, onSubmit, required, i18n.required]);
+    }, [text, closeForm, onSubmit, required, i18n.required]);
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
-            setName(e.target.value),
-
+            setText(e.target.value),
         []
     );
 
@@ -65,11 +65,13 @@ const usePhotoForm = (
         submitForm,
         handleChange,
         handleKeyPress,
-        name,
-        setName,
+        text,
+        setText,
         error,
         setError,
     };
 };
 
-export default usePhotoForm;
+export type DialogFormConfig = ReturnType<typeof useDialogForm>;
+
+export default useDialogForm;

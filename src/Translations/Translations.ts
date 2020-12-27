@@ -5,6 +5,9 @@ export const translations = {
             catalogs: "Каталоги",
             edit: "Редактировать",
             confirmationMessage: "Вы уверены, что хотите удалить каталог?",
+            createNewCatalog: "Создать новый каталог",
+            newCatalog: "Новый каталог",
+            name: "Название",
         },
         PhotoField: {
             photoFieldLabel: "Кликни чтобы выбрать фото или сбрось файл сюда",
@@ -26,24 +29,15 @@ export const translations = {
         DropPlace: {
             dropPlaceLabel: "Сбрось файл сюда",
         },
-        NewCatalogForm: {
-            newCatalog: "Новый каталог",
-            name: "Название",
-            required: "Обязательное поле",
-            createNewCatalog: "Создать новый каталог",
-            submit: "Подтвердить",
-        },
         NewFolderForm: {
             newCategory: "Новая категория",
             name: "Название",
-            submit: "Подтвердить",
             customIcon: "Ты можешь загрузить свою иконку",
             category: "Категория",
         },
         NewPhotoForm: {
             photo: "Фото",
             newPhoto: "Новое фото",
-            submit: "Подтвердить",
             description: "Описание",
         },
         usePhotoForm: {

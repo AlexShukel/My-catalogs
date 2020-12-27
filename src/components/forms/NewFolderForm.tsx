@@ -1,120 +1,81 @@
-import React, { useCallback, useState } from "react";
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    TextField,
-    Typography,
-} from "@material-ui/core";
+import React, { useCallback, useContext } from "react";
+import { Button, TextField, Typography } from "@material-ui/core";
 
 import { useI18n } from "../i18n/I18nContext";
-import usePhotoForm from "../hooks/UsePhotoForm";
+import { DialogFormConfig } from "../hooks/useDialogForm";
 import PhotoField from "../fields/PhotoField";
-import { PaperComponent } from "./NewCatalogForm";
+import { PopupContext } from "../Popups/PopupController";
 
 import css from "./Forms.module.css";
 
 const defaultI18n = {
     newCategory: "New category",
     name: "Name",
-    submit: "Submit",
     customIcon: "You can add custom icon",
     category: "Category",
 };
 
 interface Props {
-    onSubmit: (file: File | null, name: string) => void;
+    handleSubmit: (file: File | null, name: string) => void;
 }
 
-const NewFolderForm = ({ onSubmit }: Props) => {
-    const [formOpened, setFormOpened] = useState(false);
+const NewFolderForm = ({ handleSubmit }: Props) => {
+    const { setConfig } = useContext(PopupContext);
     const i18n = useI18n(defaultI18n, "NewFolderForm");
 
-    const {
-        handleChange,
-        handleDelete,
-        handleDrop,
-        handleKeyPress,
-        img,
-        inputRef,
-        name,
-        setImg,
-        setName,
-        submitForm,
-        uploadPhoto,
-        error,
-        setError,
-    } = usePhotoForm(onSubmit, () => setFormOpened(false));
+    const openForm = useCallback(
+        () =>
+            setConfig({
+                title: i18n.newCategory,
+                handleSubmit,
+                // eslint-disable-next-line react/display-name
+                dialogContent: ({
+                    text,
+                    handleChange,
+                    handleKeyPress,
+                    inputRef,
+                    error,
+                    uploadPhoto,
+                    handleDrop,
+                    handleDelete,
+                    img,
+                }: DialogFormConfig) => (
+                    <React.Fragment>
+                        <TextField
+                            fullWidth
+                            label={i18n.name}
+                            value={text}
+                            onChange={handleChange}
+                            onKeyPress={handleKeyPress}
+                            inputRef={inputRef}
+                            error={!!error}
+                            helperText={error}
+                        />
 
-    const openForm = useCallback(() => {
-        setFormOpened(true);
-        setTimeout(() => inputRef.current?.focus());
-    }, [inputRef]);
-
-    const closeForm = useCallback(() => {
-        setFormOpened(false);
-        setName("");
-        setImg("");
-        setError("");
-    }, [setImg, setName, setError]);
+                        <div className={css["folder-icon"]}>
+                            <Typography>{i18n.customIcon + ":"}</Typography>
+                            <PhotoField
+                                handleChange={uploadPhoto}
+                                handleDrop={handleDrop}
+                                handleDelete={handleDelete}
+                                img={img}
+                                height={50}
+                                width={50}
+                                editable={true}
+                                label=""
+                                className={css["folder-icon__icon"]}
+                            />
+                        </div>
+                    </React.Fragment>
+                ),
+            }),
+        [i18n, handleSubmit, setConfig]
+    );
 
     return (
-        <React.Fragment>
-            <Button onClick={openForm} color="primary" variant="contained">
-                {i18n.category}
-            </Button>
-            <Dialog
-                open={formOpened}
-                onClose={closeForm}
-                PaperComponent={PaperComponent}
-            >
-                <DialogTitle
-                    disableTypography
-                    id="draggable-dialog-title"
-                    className="draggable"
-                >
-                    <Typography variant="h5">{i18n.newCategory}</Typography>
-                </DialogTitle>
-                <DialogContent>
-                    <TextField
-                        fullWidth
-                        label={i18n.name}
-                        value={name}
-                        onChange={handleChange}
-                        onKeyPress={handleKeyPress}
-                        inputRef={inputRef}
-                        error={!!error}
-                        helperText={error}
-                    />
-
-                    <div className={css["folder-icon"]}>
-                        <Typography>{i18n.customIcon + ":"}</Typography>
-                        <PhotoField
-                            handleChange={uploadPhoto}
-                            handleDrop={handleDrop}
-                            handleDelete={handleDelete}
-                            img={img}
-                            height={50}
-                            width={50}
-                            editable={true}
-                            label=""
-                            className={css["folder-icon__icon"]}
-                        />
-                    </div>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={submitForm}
-                    >
-                        {i18n.submit}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </React.Fragment>
+        <Button onClick={openForm} color="primary" variant="contained">
+            {i18n.category}
+        </Button>
     );
 };
 

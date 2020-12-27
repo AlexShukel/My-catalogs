@@ -124,8 +124,8 @@ const FolderAddButton = ({ path, namedPath }: Props) => {
                                     flexDirection: "column",
                                 }}
                             >
-                                <NewFolderForm onSubmit={createNewFolder} />
-                                <NewPhotoForm onSubmit={createNewPhoto} />
+                                <NewFolderForm handleSubmit={createNewFolder} />
+                                <NewPhotoForm handleSubmit={createNewPhoto} />
                             </Paper>
                         </Fade>
                     </ClickAwayListener>

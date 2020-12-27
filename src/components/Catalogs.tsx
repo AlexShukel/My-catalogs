@@ -1,12 +1,11 @@
 import React, { useCallback, useContext } from "react";
-import { Box, List } from "@material-ui/core";
+import { Box, List, Button, Icon, TextField } from "@material-ui/core";
 import { set } from "lodash";
 
 import Head from "./Head";
 import { useI18n } from "./i18n/I18nContext";
 import { useCatalogArrayContext } from "./hooks/UseCatalogArrayContext";
 import { Catalog } from "../objects/Catalog";
-import NewCatalogForm from "./forms/NewCatalogForm";
 import { getUniqueId } from "../utils/utils";
 import useEditMode from "./hooks/UseEditMode";
 import EditButton from "./buttons/EditButton";
@@ -15,6 +14,9 @@ import CatalogItem from "./CatalogItem";
 import { createFolder, deleteFolder, saveFile } from "../utils/electronUtils";
 import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
 import { useConfirmPopup } from "./hooks/useConfirmPopup";
+import { PopupContext } from "./Popups/PopupController";
+import PhotoField from "./fields/PhotoField";
+import { DialogFormConfig } from "./hooks/useDialogForm";
 
 import css from "./Catalogs.module.css";
 
@@ -22,20 +24,24 @@ const defaultI18n = {
     catalogs: "Catalogs",
     edit: "Edit",
     confirmationMessage: "Are you sure you want to delete catalog?",
+    createNewCatalog: "Create new catalog",
+    newCatalog: "New catalog",
+    name: "Name",
 };
 
 const Catalogs = () => {
     const i18n = useI18n(defaultI18n, "Catalogs");
-    const context = useContext(CatalogContext);
+    const catalogContext = useContext(CatalogContext);
+    const { setConfig } = useContext(PopupContext);
     const { array, add, remove } = useCatalogArrayContext<Catalog>("catalogs");
     const { isEditing, toggleEditing } = useEditMode();
 
     const updateCoverPath = useCallback(
         (index: number, newPath: string) =>
-            context.setValues(
-                set(context, `catalogs.${index}.coverPath`, newPath)
+            catalogContext.setValues(
+                set(catalogContext, `catalogs.${index}.coverPath`, newPath)
             ),
-        [context]
+        [catalogContext]
     );
 
     const createNewCatalog = useCallback(
@@ -55,6 +61,49 @@ const Catalogs = () => {
             }
         },
         [array, add]
+    );
+
+    const openCatalogForm = useCallback(
+        () =>
+            setConfig({
+                title: i18n.newCatalog,
+                // eslint-disable-next-line react/display-name
+                dialogContent: ({
+                    text,
+                    handleChange,
+                    handleKeyPress,
+                    inputRef,
+                    error,
+                    uploadPhoto,
+                    handleDrop,
+                    handleDelete,
+                    img,
+                }: DialogFormConfig) => (
+                    <React.Fragment>
+                        <TextField
+                            fullWidth
+                            label={i18n.name}
+                            value={text}
+                            onChange={handleChange}
+                            onKeyPress={handleKeyPress}
+                            inputRef={inputRef}
+                            error={!!error}
+                            helperText={error}
+                        />
+                        <PhotoField
+                            handleChange={uploadPhoto}
+                            handleDrop={handleDrop}
+                            handleDelete={handleDelete}
+                            img={img}
+                            height={300}
+                            width={400}
+                            editable={true}
+                        />
+                    </React.Fragment>
+                ),
+                handleSubmit: createNewCatalog,
+            }),
+        [createNewCatalog, i18n, setConfig]
     );
 
     const {
@@ -101,10 +150,19 @@ const Catalogs = () => {
                     isEditing={isEditing}
                     toggleEditing={toggleEditing}
                 />
+                <Box className={css["add-btn"]}>
+                    <Button
+                        color="secondary"
+                        variant="contained"
+                        startIcon={<Icon>add</Icon>}
+                        onClick={openCatalogForm}
+                    >
+                        {i18n.createNewCatalog}
+                    </Button>
+                </Box>
             </Box>
 
             {/* POPUPS */}
-            <NewCatalogForm onSubmit={createNewCatalog} />
             <ConfirmPopup
                 open={confirmPopupOpened}
                 message={i18n.confirmationMessage}

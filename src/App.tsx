@@ -12,6 +12,8 @@ import {
 import Folder from "./components/Folder";
 import SettingsPage from "./components/SettingsPage";
 import { translations } from "./Translations/Translations";
+import PopupController from "./components/Popups/PopupController";
+import FormPopup from "./components/Popups/FormPopup";
 
 import "./styles.css";
 
@@ -55,25 +57,32 @@ const theme = createMuiTheme({
 const App = () => {
     return (
         <ThemeProvider theme={theme}>
-            <CatalogController>
-                <CatalogContext.Consumer>
-                    {({ language }) => (
-                        <I18nContext.Provider value={translations[language]}>
-                            <Router initialPage="catalogs">
-                                <Route location="catalogs">
-                                    {() => <Catalogs />}
-                                </Route>
-                                <Route location="folder">
-                                    {(params) => <Folder path={params.path} />}
-                                </Route>
-                                <Route location="settings">
-                                    {() => <SettingsPage />}
-                                </Route>
-                            </Router>
-                        </I18nContext.Provider>
-                    )}
-                </CatalogContext.Consumer>
-            </CatalogController>
+            <PopupController>
+                <CatalogController>
+                    <CatalogContext.Consumer>
+                        {({ language }) => (
+                            <I18nContext.Provider
+                                value={translations[language]}
+                            >
+                                <Router initialPage="catalogs">
+                                    <Route location="catalogs">
+                                        {() => <Catalogs />}
+                                    </Route>
+                                    <Route location="folder">
+                                        {(params) => (
+                                            <Folder path={params.path} />
+                                        )}
+                                    </Route>
+                                    <Route location="settings">
+                                        {() => <SettingsPage />}
+                                    </Route>
+                                </Router>
+                                <FormPopup />
+                            </I18nContext.Provider>
+                        )}
+                    </CatalogContext.Consumer>
+                </CatalogController>
+            </PopupController>
         </ThemeProvider>
     );
 };

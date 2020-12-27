@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 
 import { useI18n } from "../i18n/I18nContext";
-import { PaperComponent } from "../forms/NewCatalogForm";
+import { PaperComponent } from "../Popups/FormPopup";
 
 const defaultI18n = {
     yes: "yes",
