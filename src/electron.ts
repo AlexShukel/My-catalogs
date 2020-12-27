@@ -94,7 +94,6 @@ ipcMain.handle(
 ipcMain.handle("DELETE_FILE", (_event, filePath: string) => {
     fs.unlink(filePath, (err) => {
         if (err) console.error(err);
-        else console.log("File deleted");
     });
 });
 
@@ -118,6 +117,5 @@ ipcMain.handle("DELETE_FOLDER", (_event, folderPath: string) => {
 
     rimraf(targetPath, (err) => {
         if (err) console.error(err);
-        console.log("Catalog deleted");
     });
 });
