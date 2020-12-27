@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useContext } from "react";
 import {
     Icon,
     IconButton,
@@ -13,9 +13,9 @@ import { IFolder } from "../objects/IFolder";
 import { Link } from "./router/Router";
 import { useCatalogArrayContext } from "./hooks/UseCatalogArrayContext";
 import { deleteFolder } from "../utils/electronUtils";
-import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
 import { useI18n } from "./i18n/I18nContext";
-import { useConfirmPopup } from "./hooks/useConfirmPopup";
+import { showConfirmPopup } from "./Popups/Utils";
+import { PopupContext } from "./Popups/PopupController";
 
 const ICON_SIZE = 32;
 
@@ -30,28 +30,28 @@ interface Props {
 }
 
 const FoldersList = ({ path, namedPath, isEditing }: Props) => {
+    const { setConfig, dismiss } = useContext(PopupContext);
     const { array: folders, remove } = useCatalogArrayContext<IFolder>(
         `${path}.folders`
     );
 
     const i18n = useI18n(defaultI18n, "FoldersList");
 
-    const {
-        closeConfirmPopup,
-        confirmPopupOpened,
-        handleConfirm,
-        setConfirmPopupOpened,
-    } = useConfirmPopup();
-
-    const handleRemove = (index: number) => {
-        handleConfirm.current = () => {
-            deleteFolder(`catalogs/${namedPath}/${folders[index].name}`);
-            remove(index);
-            closeConfirmPopup();
-        };
-
-        setConfirmPopupOpened(true);
-    };
+    const handleRemove = useCallback(
+        async (index: number) => {
+            if (
+                await showConfirmPopup(
+                    i18n.confirmationMessage,
+                    setConfig,
+                    dismiss
+                )
+            ) {
+                deleteFolder(`catalogs/${namedPath}/${folders[index].name}`);
+                remove(index);
+            }
+        },
+        [folders, i18n, namedPath, setConfig, remove, dismiss]
+    );
 
     return (
         <React.Fragment>
@@ -95,12 +95,6 @@ const FoldersList = ({ path, namedPath, isEditing }: Props) => {
                     ))}
                 </List>
             )}
-            <ConfirmPopup
-                message={i18n.confirmationMessage}
-                open={confirmPopupOpened}
-                handleCancel={closeConfirmPopup}
-                handleConfirm={handleConfirm.current}
-            />
         </React.Fragment>
     );
 };

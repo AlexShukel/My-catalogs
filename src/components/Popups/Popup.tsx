@@ -11,15 +11,20 @@ import {
 } from "@material-ui/core";
 import Draggable from "react-draggable";
 
-import { PopupConfig, PopupContext } from "./PopupController";
+import { PopupContext } from "./PopupController";
 import { useI18n } from "../i18n/I18nContext";
 import useDialogForm from "../hooks/useDialogForm";
+import {
+    CommonPopupConfig,
+    FormPopupConfig,
+    isCommonPopupConfig,
+} from "./PopupData";
 
 const defaultI18n = {
     submit: "Submit",
 };
 
-export const PaperComponent = (props: PaperProps) => (
+const PaperComponent = (props: PaperProps) => (
     <Draggable
         handle="#draggable-dialog-title"
         cancel={'[class*="MuiDialogContent-root"]'}
@@ -28,15 +33,27 @@ export const PaperComponent = (props: PaperProps) => (
     </Draggable>
 );
 
-interface Props {
-    config: PopupConfig;
+const DefaultTitle = ({ title }: { title: string }) => {
+    return (
+        <DialogTitle
+            disableTypography
+            id="draggable-dialog-title"
+            className="draggable"
+        >
+            <Typography variant="h5">{title}</Typography>
+        </DialogTitle>
+    );
+};
+
+interface FormPopupProps {
+    config: FormPopupConfig;
     dismiss: () => void;
 }
 
-const ExistingFormPopup = ({
+const FormPopup = ({
     config: { handleSubmit, required, title, dialogContent },
     dismiss,
-}: Props) => {
+}: FormPopupProps) => {
     const i18n = useI18n(defaultI18n, "FormPopup");
 
     const dialogFormConfig = useDialogForm(handleSubmit, dismiss, required);
@@ -61,13 +78,7 @@ const ExistingFormPopup = ({
     }, [inputRef]);
     return (
         <Dialog open={true} onClose={closeForm} PaperComponent={PaperComponent}>
-            <DialogTitle
-                disableTypography
-                id="draggable-dialog-title"
-                className="draggable"
-            >
-                <Typography variant="h5">{title}</Typography>
-            </DialogTitle>
+            <DefaultTitle title={title} />
             <DialogContent>{dialogContent(dialogFormConfig)}</DialogContent>
             <DialogActions>
                 <Button
@@ -82,12 +93,36 @@ const ExistingFormPopup = ({
     );
 };
 
-const FormPopup = () => {
-    const { config, dismiss } = useContext(PopupContext);
+interface CommonPopupProps {
+    config: CommonPopupConfig;
+    dismiss: () => void;
+}
 
-    return config ? (
-        <ExistingFormPopup config={config} dismiss={dismiss} />
-    ) : null;
+const CommonPopup = ({
+    config: { dialogContent, dialogActions, dialogTitle },
+    dismiss,
+}: CommonPopupProps) => {
+    return (
+        <Dialog open={true} onClose={dismiss} PaperComponent={PaperComponent}>
+            <DefaultTitle title={dialogTitle ?? ""} />
+            {dialogContent}
+            {dialogActions?.(dismiss)}
+        </Dialog>
+    );
 };
 
-export default FormPopup;
+const Popup = () => {
+    const { config, dismiss } = useContext(PopupContext);
+
+    if (config) {
+        if (isCommonPopupConfig(config)) {
+            return <CommonPopup config={config} dismiss={dismiss} />;
+        } else {
+            return <FormPopup config={config} dismiss={dismiss} />;
+        }
+    }
+
+    return null;
+};
+
+export default Popup;

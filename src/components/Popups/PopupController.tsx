@@ -1,13 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { DialogFormConfig } from "../hooks/useDialogForm";
-
-export interface PopupConfig {
-    title: string;
-    dialogContent: (dialogFormConfig: DialogFormConfig) => React.ReactNode;
-    handleSubmit: (file: File | null, text: string) => void;
-
-    required?: boolean;
-}
+import { PopupConfig } from "./PopupData";
 
 interface PopupContextType {
     config: PopupConfig | null;

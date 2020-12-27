@@ -13,7 +13,7 @@ import Folder from "./components/Folder";
 import SettingsPage from "./components/SettingsPage";
 import { translations } from "./Translations/Translations";
 import PopupController from "./components/Popups/PopupController";
-import FormPopup from "./components/Popups/FormPopup";
+import Popup from "./components/Popups/Popup";
 
 import "./styles.css";
 
@@ -77,7 +77,7 @@ const App = () => {
                                         {() => <SettingsPage />}
                                     </Route>
                                 </Router>
-                                <FormPopup />
+                                <Popup />
                             </I18nContext.Provider>
                         )}
                     </CatalogContext.Consumer>

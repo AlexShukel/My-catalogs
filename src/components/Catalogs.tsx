@@ -12,11 +12,10 @@ import EditButton from "./buttons/EditButton";
 import { CatalogContext } from "./catalog-context/CatalogContext";
 import CatalogItem from "./CatalogItem";
 import { createFolder, deleteFolder, saveFile } from "../utils/electronUtils";
-import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
-import { useConfirmPopup } from "./hooks/useConfirmPopup";
 import { PopupContext } from "./Popups/PopupController";
 import PhotoField from "./fields/PhotoField";
 import { DialogFormConfig } from "./hooks/useDialogForm";
+import { showConfirmPopup } from "./Popups/Utils";
 
 import css from "./Catalogs.module.css";
 
@@ -32,7 +31,7 @@ const defaultI18n = {
 const Catalogs = () => {
     const i18n = useI18n(defaultI18n, "Catalogs");
     const catalogContext = useContext(CatalogContext);
-    const { setConfig } = useContext(PopupContext);
+    const { setConfig, dismiss } = useContext(PopupContext);
     const { array, add, remove } = useCatalogArrayContext<Catalog>("catalogs");
     const { isEditing, toggleEditing } = useEditMode();
 
@@ -106,24 +105,20 @@ const Catalogs = () => {
         [createNewCatalog, i18n, setConfig]
     );
 
-    const {
-        closeConfirmPopup,
-        confirmPopupOpened,
-        handleConfirm,
-        setConfirmPopupOpened,
-    } = useConfirmPopup();
-
     const handleRemove = useCallback(
-        (index: number) => {
-            handleConfirm.current = () => {
+        async (index: number) => {
+            if (
+                await showConfirmPopup(
+                    i18n.confirmationMessage,
+                    setConfig,
+                    dismiss
+                )
+            ) {
                 deleteFolder(`catalogs/${array[index].name}`);
                 remove(index);
-                closeConfirmPopup();
-            };
-
-            setConfirmPopupOpened(true);
+            }
         },
-        [array, remove, closeConfirmPopup, handleConfirm, setConfirmPopupOpened]
+        [remove, array, i18n, setConfig, dismiss]
     );
 
     return (
@@ -161,14 +156,6 @@ const Catalogs = () => {
                     </Button>
                 </Box>
             </Box>
-
-            {/* POPUPS */}
-            <ConfirmPopup
-                open={confirmPopupOpened}
-                message={i18n.confirmationMessage}
-                handleCancel={closeConfirmPopup}
-                handleConfirm={handleConfirm.current}
-            />
         </div>
     );
 };

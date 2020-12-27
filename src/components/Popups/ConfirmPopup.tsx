@@ -1,7 +1,6 @@
 import React from "react";
 import {
     Button,
-    Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
@@ -9,7 +8,6 @@ import {
 } from "@material-ui/core";
 
 import { useI18n } from "../i18n/I18nContext";
-import { PaperComponent } from "../Popups/FormPopup";
 
 const defaultI18n = {
     yes: "yes",
@@ -18,27 +16,15 @@ const defaultI18n = {
 };
 
 interface Props {
-    open: boolean;
     title?: string;
     message: string;
-    handleConfirm: () => void;
-    handleCancel: () => void;
+    resolve: (out: boolean) => void;
 }
 
-const ConfirmPopup = ({
-    open,
-    title,
-    message,
-    handleCancel,
-    handleConfirm,
-}: Props) => {
+const ConfirmPopup = ({ title, message, resolve }: Props) => {
     const i18n = useI18n(defaultI18n, "ConfirmPopup");
     return (
-        <Dialog
-            open={open}
-            onClose={handleCancel}
-            PaperComponent={PaperComponent}
-        >
+        <React.Fragment>
             <DialogTitle
                 disableTypography
                 id="draggable-dialog-title"
@@ -53,21 +39,21 @@ const ConfirmPopup = ({
             </DialogContent>
             <DialogActions>
                 <Button
-                    onClick={handleConfirm}
+                    onClick={() => resolve(true)}
                     color="secondary"
                     variant="contained"
                 >
                     {i18n.yes}
                 </Button>
                 <Button
-                    onClick={handleCancel}
+                    onClick={() => resolve(false)}
                     color="secondary"
                     variant="contained"
                 >
                     {i18n.cancel}
                 </Button>
             </DialogActions>
-        </Dialog>
+        </React.Fragment>
     );
 };
 
