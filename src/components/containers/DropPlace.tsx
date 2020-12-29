@@ -89,7 +89,7 @@ const DropPlace = ({ handleDrop, children, className }: Props) => {
                 setZone("shown");
             }
         },
-        [zone, zoneEnterTarget]
+        [zone]
     );
 
     React.useEffect(() => {
