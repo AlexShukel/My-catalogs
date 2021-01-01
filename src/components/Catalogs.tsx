@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { Box, List, Button, Icon, TextField } from "@material-ui/core";
+import { Box, List, Button, Icon } from "@material-ui/core";
 import { set } from "lodash";
 
 import Head from "./Head";
@@ -13,9 +13,8 @@ import { CatalogContext } from "./catalog-context/CatalogContext";
 import CatalogItem from "./CatalogItem";
 import { createFolder, deleteFolder, saveFile } from "../utils/electronUtils";
 import { PopupContext } from "./Popups/PopupController";
-import PhotoField from "./fields/PhotoField";
-import { DialogFormConfig } from "./hooks/useDialogForm";
 import { showConfirmPopup } from "./Popups/Utils";
+import NewCatalogForm from "./forms/NewCatalogForm";
 
 import css from "./Catalogs.module.css";
 
@@ -66,40 +65,7 @@ const Catalogs = () => {
         () =>
             setConfig({
                 title: i18n.newCatalog,
-                // eslint-disable-next-line react/display-name
-                dialogContent: ({
-                    text,
-                    handleChange,
-                    handleKeyPress,
-                    inputRef,
-                    error,
-                    uploadPhoto,
-                    handleDrop,
-                    handleDelete,
-                    img,
-                }: DialogFormConfig) => (
-                    <React.Fragment>
-                        <TextField
-                            fullWidth
-                            label={i18n.name}
-                            value={text}
-                            onChange={handleChange}
-                            onKeyPress={handleKeyPress}
-                            inputRef={inputRef}
-                            error={!!error}
-                            helperText={error}
-                        />
-                        <PhotoField
-                            handleChange={uploadPhoto}
-                            handleDrop={handleDrop}
-                            handleDelete={handleDelete}
-                            img={img}
-                            height={300}
-                            width={400}
-                            editable={true}
-                        />
-                    </React.Fragment>
-                ),
+                dialogContent: NewCatalogForm(i18n.name),
                 handleSubmit: createNewCatalog,
             }),
         [createNewCatalog, i18n, setConfig]
