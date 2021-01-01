@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import {
     Button,
     Dialog,
@@ -58,24 +58,8 @@ const FormPopup = ({
 
     const dialogFormConfig = useDialogForm(handleSubmit, dismiss, required);
 
-    const {
-        submitForm,
-        inputRef,
-        setText,
-        setImg,
-        setError,
-    } = dialogFormConfig;
+    const { submitForm, closeForm } = dialogFormConfig;
 
-    const closeForm = useCallback(() => {
-        setText("");
-        setImg("");
-        setError("");
-        dismiss();
-    }, [setImg, setText, setError, dismiss]);
-
-    useEffect(() => {
-        setTimeout(() => inputRef?.current?.focus());
-    }, [inputRef]);
     return (
         <Dialog open={true} onClose={closeForm} PaperComponent={PaperComponent}>
             <DefaultTitle title={title} />
