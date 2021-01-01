@@ -4,18 +4,18 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 import { Route, Router } from "./components/router/Router";
 import { I18nContext } from "./components/i18n/I18nContext";
-import Catalogs from "./components/Catalogs";
+import Catalogs from "./components/App/Catalog/Catalogs";
 import {
     CatalogContext,
     CatalogController,
 } from "./components/catalog-context/CatalogContext";
-import Folder from "./components/Folder";
-import SettingsPage from "./components/SettingsPage";
+import SettingsPage from "./components/App/Settings/SettingsPage";
 import { translations } from "./Translations/Translations";
 import PopupController from "./components/Popups/PopupController";
 import Popup from "./components/Popups/Popup";
 
 import "./styles.css";
+import Folder from "./components/App/Folder/Folder";
 
 export const StyledIconButton = withStyles({
     root: {

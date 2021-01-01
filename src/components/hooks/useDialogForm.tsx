@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useI18n } from "../i18n/I18nContext";
-import usePhotoField from "./UsePhotoField";
+import usePhotoField from "./usePhotoField";
 
 const defaultI18n = {
     required: "Required",

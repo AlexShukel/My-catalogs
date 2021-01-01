@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
 import { Box, Icon, ListItem, Tooltip } from "@material-ui/core";
 
-import { Photo } from "../objects/Photo";
-import PhotoField from "./fields/PhotoField";
-import { deleteFile, saveFile } from "../utils/electronUtils";
-import usePhotoField from "./hooks/UsePhotoField";
-import { StyledIconButton } from "../App";
-import { useI18n } from "./i18n/I18nContext";
+import { StyledIconButton } from "../../../App";
+import { Photo } from "../../../objects/Photo";
+import { saveFile, deleteFile } from "../../../utils/electronUtils";
+import PhotoField from "../../fields/PhotoField";
+import usePhotoField from "../../hooks/usePhotoField";
+import { useI18n } from "../../i18n/I18nContext";
 
 import css from "./PhotoItem.module.css";
 
@@ -25,7 +25,7 @@ interface Props {
 }
 
 const PhotoItem = ({
-    photo: { photo },
+    photo: { url },
     index,
     isEditing,
     updatePhotoPath,
@@ -47,16 +47,16 @@ const PhotoItem = ({
     );
 
     const handleDelete = useCallback(() => {
-        deleteFile(photo);
+        deleteFile(url);
         updatePhotoPath(index, "");
-    }, [photo, index, updatePhotoPath]);
+    }, [url, index, updatePhotoPath]);
 
     const { handleChange, handleDrop } = usePhotoField(photoUploader);
 
     return (
         <ListItem className={css["list-item"]}>
             <PhotoField
-                img={photo}
+                img={url}
                 width={240}
                 height={180}
                 handleChange={handleChange}

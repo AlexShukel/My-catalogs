@@ -1,13 +1,13 @@
 import React, { useCallback, useContext } from "react";
 import { List } from "@material-ui/core";
 
-import { IFolder } from "../objects/IFolder";
-import { useCatalogArrayContext } from "./hooks/UseCatalogArrayContext";
-import { deleteFolder } from "../utils/electronUtils";
-import { useI18n } from "./i18n/I18nContext";
-import { showConfirmPopup } from "./Popups/Utils";
-import { PopupContext } from "./Popups/PopupController";
 import FolderItem from "./FolderItem";
+import { IFolder } from "../../../objects/IFolder";
+import { deleteFolder } from "../../../utils/electronUtils";
+import { useCatalogArrayContext } from "../../hooks/useCatalogArrayContext";
+import { useI18n } from "../../i18n/I18nContext";
+import { PopupContext } from "../../Popups/PopupController";
+import { showConfirmPopup } from "../../Popups/Utils";
 
 const defaultI18n = {
     confirmationMessage: "Are you sure you want to delete category?",
@@ -30,7 +30,7 @@ const FoldersList = ({ path, namedPath, isEditing }: Props) => {
             modify(
                 {
                     ...folders[index],
-                    icon: newPath,
+                    iconUrl: newPath,
                 },
                 index
             );

@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { Dialog, DialogContent, List } from "@material-ui/core";
 
-import { Photo } from "../objects/Photo";
-import { useCatalogArrayContext } from "./hooks/UseCatalogArrayContext";
+import { Photo } from "../../../objects/Photo";
+import { useCatalogArrayContext } from "../../hooks/useCatalogArrayContext";
 import PhotoItem from "./PhotoItem";
-import { deleteFile } from "../utils/electronUtils";
+import { deleteFile } from "../../../utils/electronUtils";
 import PhotoSlider from "./PhotoSlider";
 
 interface Props {
@@ -42,7 +42,7 @@ const PhotosList = ({ path, namedPath, isEditing }: Props) => {
             modify(
                 {
                     ...photos[index],
-                    photo: newPath,
+                    url: newPath,
                 },
                 index
             ),
@@ -51,7 +51,7 @@ const PhotosList = ({ path, namedPath, isEditing }: Props) => {
 
     const deletePhoto = useCallback(
         (index: number) => {
-            deleteFile(photos[index].photo);
+            deleteFile(photos[index].url);
             remove(index);
         },
         [photos, remove]

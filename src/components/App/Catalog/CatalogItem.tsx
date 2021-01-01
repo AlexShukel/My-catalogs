@@ -10,15 +10,15 @@ import {
     Tooltip,
 } from "@material-ui/core";
 
-import { Catalog } from "../objects/Catalog";
-import PhotoField from "./fields/PhotoField";
-import { Link } from "./router/Router";
-import { deleteFile, saveFile } from "../utils/electronUtils";
-import usePhotoField from "./hooks/UsePhotoField";
-import { StyledIconButton } from "../App";
-import { useI18n } from "./i18n/I18nContext";
+import { StyledIconButton } from "../../../App";
+import { Catalog } from "../../../objects/Catalog";
+import { saveFile, deleteFile } from "../../../utils/electronUtils";
+import PhotoField from "../../fields/PhotoField";
+import usePhotoField from "../../hooks/usePhotoField";
+import { useI18n } from "../../i18n/I18nContext";
 
 import css from "./CatalogItem.module.css";
+import { Link } from "../../router/Router";
 
 const defaultI18n = {
     removeCatalog: "Remove catalog",
@@ -29,7 +29,7 @@ interface Props {
     index: number;
     isEditing: boolean;
     remove: (index: number) => void;
-    updateCoverPath: (index: number, newPath: string) => void;
+    updateCoverUrl: (index: number, newPath: string) => void;
 }
 
 const CatalogItem = ({
@@ -37,7 +37,7 @@ const CatalogItem = ({
     index,
     isEditing,
     remove,
-    updateCoverPath,
+    updateCoverUrl,
 }: Props) => {
     const i18n = useI18n(defaultI18n, "CatalogItem");
 
@@ -53,15 +53,15 @@ const CatalogItem = ({
                 file,
                 `catalogs/${catalog.name}/${file.name}`
             );
-            updateCoverPath(index, newPath);
+            updateCoverUrl(index, newPath);
         },
-        [index, updateCoverPath, catalog.name]
+        [index, updateCoverUrl, catalog.name]
     );
 
     const handleDelete = useCallback(() => {
-        deleteFile(catalog.coverPath);
-        updateCoverPath(index, "");
-    }, [catalog.coverPath, index, updateCoverPath]);
+        deleteFile(catalog.coverUrl);
+        updateCoverUrl(index, "");
+    }, [catalog.coverUrl, index, updateCoverUrl]);
 
     const { handleChange, handleDrop } = usePhotoField(catalogCoverUploader);
 
@@ -79,7 +79,7 @@ const CatalogItem = ({
                         <PhotoField
                             width={300}
                             height={200}
-                            img={catalog.coverPath}
+                            img={catalog.coverUrl}
                             handleChange={handleChange}
                             handleDrop={handleDrop}
                             handleDelete={handleDelete}

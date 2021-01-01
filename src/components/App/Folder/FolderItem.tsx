@@ -9,13 +9,13 @@ import {
     Tooltip,
 } from "@material-ui/core";
 
-import { IFolder } from "../objects/IFolder";
-import { Link } from "./router/Router";
-import PhotoField from "./fields/PhotoField";
-import usePhotoField from "./hooks/UsePhotoField";
-import { deleteFile, saveFile } from "../utils/electronUtils";
-import { StyledIconButton } from "../App";
-import { useI18n } from "./i18n/I18nContext";
+import { StyledIconButton } from "../../../App";
+import { IFolder } from "../../../objects/IFolder";
+import { saveFile, deleteFile } from "../../../utils/electronUtils";
+import PhotoField from "../../fields/PhotoField";
+import usePhotoField from "../../hooks/usePhotoField";
+import { useI18n } from "../../i18n/I18nContext";
+import { Link } from "../../router/Router";
 
 const defaultI18n = {
     removeFolderIcon: "Remove folder icon",
@@ -38,7 +38,7 @@ const FolderItem = ({
     index,
     path,
     namedPath,
-    folder: { icon, name },
+    folder: { iconUrl, name },
     isEditing,
     handleRemove,
     updateIcon,
@@ -59,9 +59,9 @@ const FolderItem = ({
     const { handleChange } = usePhotoField(iconUploader);
 
     const handleDelete = useCallback(() => {
-        deleteFile(icon!);
+        deleteFile(iconUrl!);
         updateIcon(index, "");
-    }, [icon, index, updateIcon]);
+    }, [iconUrl, index, updateIcon]);
 
     return (
         <Link href={`folder?path=${path}.folders.${index}`}>
@@ -69,7 +69,7 @@ const FolderItem = ({
                 <ListItem button divider onClick={onClick}>
                     <ListItemIcon>
                         <PhotoField
-                            img={icon ?? ""}
+                            img={iconUrl ?? ""}
                             editable={isEditing}
                             height={ICON_SIZE}
                             width={ICON_SIZE}

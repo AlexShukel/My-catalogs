@@ -2,10 +2,10 @@ import React, { useCallback, useContext } from "react";
 import { Select, MenuItem, Typography } from "@material-ui/core";
 import { set } from "lodash";
 
-import { useI18n } from "./i18n/I18nContext";
-import { defaultLanguageI18n, Language } from "../objects/Language";
-import Head from "./Head";
-import { CatalogContext } from "./catalog-context/CatalogContext";
+import { useI18n } from "../../i18n/I18nContext";
+import { defaultLanguageI18n, Language } from "../../../objects/Language";
+import Head from "../Head";
+import { CatalogContext } from "../../catalog-context/CatalogContext";
 
 import css from "./SettingsPage.module.css";
 

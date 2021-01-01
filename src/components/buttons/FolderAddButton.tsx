@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { useI18n } from "../i18n/I18nContext";
 
-import { useCatalogArrayContext } from "../hooks/UseCatalogArrayContext";
+import { useCatalogArrayContext } from "../hooks/useCatalogArrayContext";
 import { IFolder } from "../../objects/IFolder";
 import { Photo } from "../../objects/Photo";
 import { getUniqueId } from "../../utils/utils";
@@ -72,7 +72,7 @@ const FolderAddButton = ({ path, namedPath }: Props) => {
                     folders: [],
                     photos: [],
                     name,
-                    icon: iconPath,
+                    iconUrl: iconPath,
                 });
             }
             setAnchorEl(null);
@@ -87,7 +87,7 @@ const FolderAddButton = ({ path, namedPath }: Props) => {
                 : "";
             addPhoto({
                 id: getUniqueId(photos, "id"),
-                photo: photoPath,
+                url: photoPath,
                 description,
             });
             setAnchorEl(null);

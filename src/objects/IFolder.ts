@@ -3,7 +3,7 @@ import { Photo } from "./Photo";
 export interface IFolder {
     id: number;
     name: string;
-    icon?: string;
+    iconUrl?: string;
     folders: IFolder[];
     photos: Photo[];
 }

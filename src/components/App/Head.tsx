@@ -2,9 +2,9 @@ import React from "react";
 import classNames from "classnames";
 import { Box, Icon, Paper, Typography, useTheme } from "@material-ui/core";
 
-import BackButton from "./buttons/BackButton";
-import { StyledIconButton } from "../App";
-import { Link } from "./router/Router";
+import { StyledIconButton } from "../../App";
+import BackButton from "../buttons/BackButton";
+import { Link } from "../router/Router";
 
 import css from "./Head.module.css";
 

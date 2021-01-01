@@ -9,11 +9,11 @@ import {
 } from "@material-ui/core";
 import { set } from "lodash";
 
-import { useI18n } from "./i18n/I18nContext";
-import { Photo } from "../objects/Photo";
-import EditableText from "./EditableText";
-import PhotoView from "./containers/PhotoView";
-import { CatalogContext } from "./catalog-context/CatalogContext";
+import { useI18n } from "../../i18n/I18nContext";
+import { Photo } from "../../../objects/Photo";
+import EditableText from "../../EditableText";
+import PhotoView from "../../containers/PhotoView";
+import { CatalogContext } from "../../catalog-context/CatalogContext";
 
 import css from "./PhotoSlider.module.css";
 
@@ -82,7 +82,7 @@ const PhotoSlider = ({
                 </IconButton>
 
                 <div className={css["img-container"]}>
-                    <PhotoView path={photos[index].photo} />
+                    <PhotoView path={photos[index].url} />
                 </div>
 
                 <IconButton

@@ -2,19 +2,23 @@ import React, { useCallback, useContext } from "react";
 import { Box, List, Button, Icon } from "@material-ui/core";
 import { set } from "lodash";
 
-import Head from "./Head";
-import { useI18n } from "./i18n/I18nContext";
-import { useCatalogArrayContext } from "./hooks/UseCatalogArrayContext";
-import { Catalog } from "../objects/Catalog";
-import { getUniqueId } from "../utils/utils";
-import useEditMode from "./hooks/UseEditMode";
-import EditButton from "./buttons/EditButton";
-import { CatalogContext } from "./catalog-context/CatalogContext";
+import Head from "../Head";
+import { useI18n } from "../../i18n/I18nContext";
+import { useCatalogArrayContext } from "../../hooks/useCatalogArrayContext";
+import { Catalog } from "../../../objects/Catalog";
+import { getUniqueId } from "../../../utils/utils";
+import useEditMode from "../../hooks/useEditMode";
+import EditButton from "../../buttons/EditButton";
+import { CatalogContext } from "../../catalog-context/CatalogContext";
 import CatalogItem from "./CatalogItem";
-import { createFolder, deleteFolder, saveFile } from "../utils/electronUtils";
-import { PopupContext } from "./Popups/PopupController";
-import { showConfirmPopup } from "./Popups/Utils";
-import NewCatalogForm from "./forms/NewCatalogForm";
+import {
+    createFolder,
+    deleteFolder,
+    saveFile,
+} from "../../../utils/electronUtils";
+import { PopupContext } from "../../Popups/PopupController";
+import { showConfirmPopup } from "../../Popups/Utils";
+import NewCatalogForm from "../../forms/NewCatalogForm";
 
 import css from "./Catalogs.module.css";
 
@@ -34,7 +38,7 @@ const Catalogs = () => {
     const { array, add, remove } = useCatalogArrayContext<Catalog>("catalogs");
     const { isEditing, toggleEditing } = useEditMode();
 
-    const updateCoverPath = useCallback(
+    const updateCoverUrl = useCallback(
         (index: number, newPath: string) =>
             catalogContext.setValues(
                 set(catalogContext, `catalogs.${index}.coverPath`, newPath)
@@ -52,7 +56,7 @@ const Catalogs = () => {
                 add({
                     id: getUniqueId(array, "id"),
                     name: catalogName,
-                    coverPath,
+                    coverUrl: coverPath,
                     folders: [],
                     photos: [],
                 });
@@ -61,17 +65,7 @@ const Catalogs = () => {
         [array, add]
     );
 
-    const openCatalogForm = useCallback(
-        () =>
-            setConfig({
-                title: i18n.newCatalog,
-                dialogContent: NewCatalogForm(i18n.name),
-                handleSubmit: createNewCatalog,
-            }),
-        [createNewCatalog, i18n, setConfig]
-    );
-
-    const handleRemove = useCallback(
+    const handleCatalogRemove = useCallback(
         async (index: number) => {
             if (
                 await showConfirmPopup(
@@ -87,6 +81,16 @@ const Catalogs = () => {
         [remove, array, i18n, setConfig, dismiss]
     );
 
+    const openCatalogForm = useCallback(
+        () =>
+            setConfig({
+                title: i18n.newCatalog,
+                dialogContent: NewCatalogForm(i18n.name),
+                handleSubmit: createNewCatalog,
+            }),
+        [createNewCatalog, i18n, setConfig]
+    );
+
     return (
         <div>
             <Head title={i18n.catalogs} className={css.head} />
@@ -99,8 +103,8 @@ const Catalogs = () => {
                             catalog={catalog}
                             index={index}
                             isEditing={isEditing}
-                            remove={handleRemove}
-                            updateCoverPath={updateCoverPath}
+                            remove={handleCatalogRemove}
+                            updateCoverUrl={updateCoverUrl}
                         />
                     ))}
             </List>

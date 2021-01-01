@@ -2,13 +2,13 @@ import React, { useContext } from "react";
 import { get } from "lodash";
 import { Box } from "@material-ui/core";
 
-import EditButton from "./buttons/EditButton";
-import FolderAddButton from "./buttons/FolderAddButton";
-import { CatalogContext } from "./catalog-context/CatalogContext";
-import FoldersList from "./FoldersList";
-import Head from "./Head";
-import useEditMode from "./hooks/UseEditMode";
+import EditButton from "../../buttons/EditButton";
+import FolderAddButton from "../../buttons/FolderAddButton";
+import { CatalogContext } from "../../catalog-context/CatalogContext";
+import Head from "../Head";
+import useEditMode from "../../hooks/useEditMode";
 import PhotosList from "./PhotosList";
+import FoldersList from "./FoldersList";
 
 interface Props {
     path: string;
