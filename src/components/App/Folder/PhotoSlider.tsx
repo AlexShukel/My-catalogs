@@ -1,12 +1,5 @@
 import React, { useCallback, useContext, useRef, useState } from "react";
-import {
-    IconButton,
-    Icon,
-    Accordion,
-    AccordionSummary,
-    Typography,
-    AccordionDetails,
-} from "@material-ui/core";
+import { IconButton, Icon } from "@material-ui/core";
 import { set } from "lodash";
 
 import { useI18n } from "../../i18n/I18nContext";
@@ -92,24 +85,16 @@ const PhotoSlider = ({
                     <Icon fontSize="large">arrow_forward</Icon>
                 </IconButton>
             </div>
-            <Accordion className={css["slider__description"]}>
-                <AccordionSummary
-                    expandIcon={<Icon fontSize="small">expand_more</Icon>}
-                >
-                    <Typography>{i18n.description}</Typography>
-                </AccordionSummary>
-                <AccordionDetails className={css["accordion-details"]}>
-                    <EditableText
-                        initialText={photos[index].description}
-                        onSubmit={handleSubmit}
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        label={i18n.description}
-                        index={index}
-                    />
-                </AccordionDetails>
-            </Accordion>
+
+            <EditableText
+                initialText={photos[index].description}
+                onSubmit={handleSubmit}
+                variant="outlined"
+                fullWidth
+                multiline
+                label={i18n.description}
+                index={index}
+            />
         </div>
     );
 };

@@ -76,6 +76,9 @@ export const translations = {
         PhotoItem: {
             remove: "Удалить",
         },
+        FormPopup: {
+            submit: "Подтвердить",
+        },
     },
     LT: {},
 };

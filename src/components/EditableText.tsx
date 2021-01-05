@@ -4,6 +4,8 @@ import { Box, TextField, TextFieldProps, Typography } from "@material-ui/core";
 import { useI18n } from "./i18n/I18nContext";
 import EditButton from "./buttons/EditButton";
 
+import css from "./EditableText.module.css";
+
 const defaultI18n = {
     noTextLabel: "There isn't any description",
 };
@@ -52,7 +54,7 @@ const EditableText = ({ initialText, onSubmit, index, ...other }: Props) => {
     }, [initialText, setIsEditing, index]);
 
     return (
-        <React.Fragment>
+        <div className={css["container"]}>
             {isEditing ? (
                 <TextField
                     value={text}
@@ -71,7 +73,7 @@ const EditableText = ({ initialText, onSubmit, index, ...other }: Props) => {
                     toggleEditing={toggleEditing}
                 />
             </Box>
-        </React.Fragment>
+        </div>
     );
 };
 
