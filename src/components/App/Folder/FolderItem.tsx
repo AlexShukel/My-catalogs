@@ -100,7 +100,9 @@ const FolderItem = ({
                         <ListItemSecondaryAction>
                             <Tooltip title={i18n.removeCategory}>
                                 <IconButton onClick={() => handleRemove(index)}>
-                                    <Icon fontSize="small">delete</Icon>
+                                    <Icon color="error" fontSize="small">
+                                        delete
+                                    </Icon>
                                 </IconButton>
                             </Tooltip>
                         </ListItemSecondaryAction>
