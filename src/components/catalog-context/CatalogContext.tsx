@@ -23,13 +23,10 @@ export const CatalogController = ({ children }: ControllerProps) => {
             .catch((err) => console.error(err));
     }, []);
 
-    const setValues = React.useCallback(
-        (values: AppData) => {
-            setState(values);
-            ipcRenderer.invoke("UPDATE_DATA", JSON.stringify(values));
-        },
-        [setState]
-    );
+    const setValues = React.useCallback((values: AppData) => {
+        setState(values);
+        ipcRenderer.invoke("UPDATE_DATA", JSON.stringify(values));
+    }, []);
 
     return (
         <CatalogContext.Provider

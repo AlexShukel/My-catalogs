@@ -7,10 +7,3 @@
     width: 300px;
     height: 200px;
 }
-
-.add-btn {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    margin: 30px;
-}

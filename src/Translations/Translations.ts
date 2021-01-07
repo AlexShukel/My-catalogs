@@ -3,8 +3,11 @@ export const translations = {
     RU: {
         Catalogs: {
             catalogs: "Каталоги",
-            edit: "Редактировать",
+        },
+        CatalogsList: {
             confirmationMessage: "Вы уверены, что хотите удалить каталог?",
+        },
+        NewCatalogButton: {
             createNewCatalog: "Создать новый каталог",
             newCatalog: "Новый каталог",
             name: "Название",

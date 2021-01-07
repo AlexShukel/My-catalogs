@@ -16,9 +16,9 @@ import { saveFile, deleteFile } from "../../../utils/electronUtils";
 import PhotoField from "../../fields/PhotoField";
 import usePhotoField from "../../hooks/usePhotoField";
 import { useI18n } from "../../i18n/I18nContext";
+import { Link } from "../../router/Router";
 
 import css from "./CatalogItem.module.css";
-import { Link } from "../../router/Router";
 
 const defaultI18n = {
     removeCatalog: "Remove catalog",

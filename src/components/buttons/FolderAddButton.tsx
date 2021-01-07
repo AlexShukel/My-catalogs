@@ -7,16 +7,14 @@ import {
     Paper,
     Popper,
 } from "@material-ui/core";
-import { useI18n } from "../i18n/I18nContext";
 
+import { useI18n } from "../i18n/I18nContext";
 import { useCatalogArrayContext } from "../hooks/useCatalogArrayContext";
 import { IFolder } from "../../objects/IFolder";
 import { Photo } from "../../objects/Photo";
 import { getUniqueId } from "../../utils/utils";
 import NewFolderForm from "../forms/NewFolderForm";
 import { createFolder, saveFile } from "../../utils/electronUtils";
-
-import css from "./Buttons.module.css";
 import NewPhotoForm from "../forms/NewPhotoForm";
 
 const POPPER_TRANSITION = 200;
@@ -97,7 +95,7 @@ const FolderAddButton = ({ path, namedPath }: Props) => {
 
     return (
         <React.Fragment>
-            <Box className={css["add-btn"]}>
+            <Box className="add-btn">
                 <Button
                     color="secondary"
                     variant="contained"
