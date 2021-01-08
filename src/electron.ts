@@ -119,3 +119,14 @@ ipcMain.handle("DELETE_FOLDER", (_event, folderPath: string) => {
         if (err) console.error(err);
     });
 });
+
+ipcMain.handle("RENAME_FOLDER", (_event, oldPath: string, newPath: string) => {
+    const fullOldPath = path.join(storagePath, oldPath);
+    const fullNewPath = path.join(storagePath, newPath);
+
+    fs.rename(fullOldPath, fullNewPath, (err) => {
+        if (err) console.error(err);
+
+        console.log("Directory renamed successfully");
+    });
+});

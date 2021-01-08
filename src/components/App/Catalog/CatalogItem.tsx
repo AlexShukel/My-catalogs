@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import {
     ListItem,
     Paper,
@@ -9,14 +9,23 @@ import {
     useTheme,
     Tooltip,
 } from "@material-ui/core";
+import { set } from "lodash";
+
+import path from "path";
 
 import { StyledIconButton } from "../../../App";
 import { Catalog } from "../../../objects/Catalog";
-import { saveFile, deleteFile } from "../../../utils/electronUtils";
+import {
+    saveFile,
+    deleteFile,
+    renameFolder,
+} from "../../../utils/electronUtils";
 import PhotoField from "../../fields/PhotoField";
 import usePhotoField from "../../hooks/usePhotoField";
 import { useI18n } from "../../i18n/I18nContext";
 import { Link } from "../../router/Router";
+import { CatalogContext } from "../../catalog-context/CatalogContext";
+import TextEditor from "../../TextEditor";
 
 import css from "./CatalogItem.module.css";
 
@@ -40,6 +49,7 @@ const CatalogItem = ({
     updateCoverUrl,
 }: Props) => {
     const i18n = useI18n(defaultI18n, "CatalogItem");
+    const catalogContext = useContext(CatalogContext);
 
     const {
         palette: {
@@ -64,6 +74,19 @@ const CatalogItem = ({
     }, [catalog.coverUrl, index, updateCoverUrl]);
 
     const { handleChange, handleDrop } = usePhotoField(catalogCoverUploader);
+
+    const changeCatalogName = useCallback(
+        (newName: string) => {
+            renameFolder(
+                path.join("catalogs", catalogContext.catalogs[index].name),
+                path.join("catalogs", newName)
+            );
+            catalogContext.setValues(
+                set(catalogContext, `catalogs.${index}.name`, newName)
+            );
+        },
+        [catalogContext, index]
+    );
 
     return (
         <ListItem className={css["list-item-size"]}>
@@ -90,7 +113,11 @@ const CatalogItem = ({
                                 className={css["item__name"]}
                                 variant="h4"
                             >
-                                {catalog.name}
+                                <TextEditor
+                                    initialText={catalog.name}
+                                    isEditing={isEditing}
+                                    onSubmit={changeCatalogName}
+                                />
                             </Typography>
                         </ListItemText>
                         {isEditing && (

@@ -20,3 +20,7 @@ export const createFolder = async (path: string): Promise<string> => {
 export const deleteFolder = (path: string) => {
     ipcRenderer.invoke("DELETE_FOLDER", path);
 };
+
+export const renameFolder = (oldPath: string, newPath: string) => {
+    ipcRenderer.invoke("RENAME_FOLDER", oldPath, newPath);
+};
