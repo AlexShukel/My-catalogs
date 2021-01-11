@@ -1,10 +1,3 @@
-.hide {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-    overflow-x: hidden;
-}
-
 .edit-text {
     font-family: inherit;
     font-size: inherit;

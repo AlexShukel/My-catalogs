@@ -30,3 +30,16 @@ body {
 .draggable {
     cursor: move;
 }
+
+.hide {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    overflow-x: hidden;
+}
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

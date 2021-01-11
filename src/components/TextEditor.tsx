@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import classNames from "classnames";
+
+import OverflowText from "./OverflowText";
 
 import css from "./TextEditor.module.css";
 
@@ -24,15 +25,15 @@ const TextEditor = ({ isEditing, initialText, onSubmit }: Props) => {
     return (
         <React.Fragment>
             <input
-                className={classNames(
-                    { [css["hide"]]: !isEditing },
-                    css["edit-text"]
-                )}
+                className={css["edit-text"]}
                 onClick={(e) => e.stopPropagation()}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
+                style={{ display: isEditing ? "inline-block" : "none" }}
             />
-            <span className={isEditing ? css["hide"] : undefined}>{text}</span>
+            <span className={isEditing ? "hide" : undefined}>
+                <OverflowText text={initialText} maxTextWidth={300} />
+            </span>
         </React.Fragment>
     );
 };
